@@ -16,6 +16,8 @@ column_name = 'Employee ID'
 numbers = data['Employee ID'].tolist()
 swapped_numbers = divide_and_swap(numbers)
 swapped_df = pd.DataFrame({'Swapped Numbers': swapped_numbers})
+data['Employee ID']=data['Employee ID'].apply(swapped_df)
+print(data)
 #swapped_df.to_excel('output_file_emp.xlsx', index=False)
 # Print the original values and the results
 
