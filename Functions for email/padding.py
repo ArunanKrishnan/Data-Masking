@@ -17,4 +17,4 @@ if 'Email address' in df.columns:
     df['Email address'] = df['Email address'].apply(pad_email)
     print(df['Email address'])
     #load the masked output in the ouput excel file
-    df.to_excel('outputfile.xlsx', index=False)
+    df.to_excel('outputfile_padding.xlsx', index=False)

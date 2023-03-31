@@ -12,4 +12,4 @@ def shuffle_email(email):
 df['Email address'] = df['Email address'].apply(shuffle_email)
 print(df)
 print(df['Email address'])
-df.to_excel('output.xlsx', index=False)
+df.to_excel('output_shuffling.xlsx', index=False)

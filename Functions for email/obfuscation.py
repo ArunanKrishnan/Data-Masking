@@ -19,4 +19,4 @@ df['Email address'] = df['Email address'].apply(obfuscate_email)
 print(df)
 print(df['Email address'])
 #load masked data into output excel file
-df.to_excel('outputfles.xlsx', index=False)
+df.to_excel('outputfles_obfus.xlsx', index=False)
