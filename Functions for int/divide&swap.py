@@ -1,5 +1,8 @@
 import pandas as pd
+# This method is about dividing the column into two halves swapping the two halves
 data = pd.read_excel(r'C:\Users\akrish451\Desktop\datamaskingproject\Data-Obfuscation-1\input files\masking-input.xlsx')
+
+# diving the columns into two halves
 
 def divide_and_swap(numbers):   
     length = len(numbers)  
@@ -12,6 +15,8 @@ def divide_and_swap(numbers):
     else:
         return "Error: List length must be even"
 column_name = 'Employee ID' 
+
+# swapping the two halves which we added
 
 numbers = data['Employee ID'].tolist()
 swapped_numbers = divide_and_swap(numbers)
