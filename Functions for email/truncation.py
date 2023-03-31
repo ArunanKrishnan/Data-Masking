@@ -8,7 +8,7 @@ def mask_email(email):
     masked_email = truncated_username + '@' + domain
     return masked_email
 #load the excel file as input
-df = pd.read_excel(r'C:\Users\kramal361\Downloads\maskinginput.xlsx')
+df = pd.read_excel(r'C:\Users\kramal361\DownloadsC:\Users\kramal361\Desktop\datamaskingproject\Data-Obfuscation-2\maskinginput.xlsx')
 df['Email address'] = df['Email address'].apply(mask_email)
 print(df)
 print(df['Email address'])
