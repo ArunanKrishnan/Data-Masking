@@ -1,5 +1,5 @@
 import pandas as pd
-data = pd.read_excel(r'C:\Users\akrish451\Desktop\datamaskingproject\Data-Obfuscation-1\masking-input.xlsx')
+data = pd.read_excel(r'C:\Users\akrish451\Desktop\datamaskingproject\Data-Obfuscation-1\input files\masking-input.xlsx')
 
 def divide_and_swap(numbers):   
     length = len(numbers)  
@@ -16,8 +16,8 @@ column_name = 'Employee ID'
 numbers = data['Employee ID'].tolist()
 swapped_numbers = divide_and_swap(numbers)
 swapped_df = pd.DataFrame({'Swapped Numbers': swapped_numbers})
-data['Employee ID']=data['Employee ID'].apply(swapped_df)
-print(data)
-#swapped_df.to_excel('output_file_emp.xlsx', index=False)
-# Print the original values and the results
+#data['Employee ID']=data['Employee ID'].apply(swapped_df)
+
+swapped_df.to_excel('op_divide&swap.xlsx', index=False)
+#Print the original values and the results
 
