@@ -11,9 +11,9 @@ def some(weight):
         r=(random.randint(10))
         if r not in l:
             l.append(r)
-            return weight-r
+            return weight+r
         break
 
 data["Weight"]=data["Weight"].apply(some)
 data.to_excel('output_file_add.xlsx', index=False)
-print(data)
+print(data['Weight'])
