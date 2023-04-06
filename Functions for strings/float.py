@@ -20,4 +20,6 @@ def mask_float(value):#3,.5
     masked_value = round(float(str(masked_value) + '.' + rand),2) # append the mask_value
     return masked_value%100
 masked_value = data["Weight"].apply(mask_float)
+secmasked=masked_value.apply()
+data.to_excel('output_file_float.xlsx', index=False)
 print(masked_value)
