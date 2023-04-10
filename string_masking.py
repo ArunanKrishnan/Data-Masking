@@ -1,6 +1,19 @@
 import pandas as pd
+
+# Load the input Excel file
 input_file = r'C:\Users\sethir919\Desktop\project\masking-input.xlsx'
 data = pd.read_excel(input_file)
+
+# Define a function to mask a single name
+def mask_name(name):
+    first_letter = name[0]
+    last_letter = name[-1]
+    masked_name = (len(name)-2)*'*'
+    return  masked_name 
+
+# Mask the names in the 'Name' column
+data['Name'] = data['Name'].apply(mask_name)
+data.to_excel('output_file_mask.xlsx', index=False)
 
 # Define a function to mask a single name
 def mask_name(Name):
@@ -62,3 +75,14 @@ def mask_name(Name):
 data['Name'] = data['Name'].apply(mask_name)
 data.to_excel('output_file_char.xlsx', index=False)
 print(data['Name'])
+
+from mimesis import Person
+import pandas as pd
+input_file = r'C:\Users\sethir919\Desktop\project\masking-input.xlsx'
+data = pd.read_excel(input_file)
+person = Person()
+fake_names = [person.full_name() for i in range(10)]
+
+data = pd.DataFrame({'Name': fake_names})
+data.to_excel('output_file_random.xlsx', index=False)
+print(data)
