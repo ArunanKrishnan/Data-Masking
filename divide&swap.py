@@ -2,7 +2,7 @@ import pandas as pd
 # This method is about dividing the column into two halves swapping the two halves
 data = pd.read_excel(r'C:\Users\akrish451\Desktop\datamaskingproject\Data-Obfuscation-1\input files\masking-input.xlsx')
 
-# diving the columns into two halves
+# dividng the columns into two halves
 
 def divide_and_swap(numbers):   
     length = len(numbers)  
