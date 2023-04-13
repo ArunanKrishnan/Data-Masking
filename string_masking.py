@@ -4,7 +4,7 @@ import os
 import random
 
 #import input data
-data = pd.read_excel(r'C:\Users\sethir919\Desktop\project\masking-input.xlsx')
+data = pd.read_excel(r'C:\Users\kramal361\Desktop\datamaskingproject\Data-Obfuscation-2\masking-input.xlsx')
 def shuffle_email(email):
     '''Shuffles the local-part of an email address using a random shuffling algorithm.
     Args:
