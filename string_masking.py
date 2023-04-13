@@ -210,7 +210,6 @@ def xor_chars(plaintext):
 
 # Apply the Bitwise XOR algorithm to the 'Name' column
 data['Name'] = data['Name'].apply(lambda x: xor_chars(x) if isinstance(x, str) else x)
-
 print(data['Name'])
 
 
