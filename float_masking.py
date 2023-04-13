@@ -133,11 +133,25 @@ def swap_floats(a):
 #data['Weight'] = data['Weight'].apply(swap_floats)
 
 
-def shuffle_column(weight):
+'''def shuffle_column(weight):
     shuffled = np.random.permutation(weight)
     return shuffled
 data['Weight'] = data['Weight'].apply(shuffle_column)
-print(data['Weight'])
+print(data['Weight'])'''
+import pandas as pd
+import numpy as np
+
+def shuffle_column_values(df, column_name):
+    # shuffle the values in the specified column
+    shuffled_column = df[column_name].sample(frac=1).reset_index(drop=True)
+    # create a new DataFrame with shuffled column
+    shuffled_df = pd.DataFrame({
+        column_name: shuffled_column})
+    return shuffled_df
+shuffled_weight = shuffle_column_values(data, 'Weight')
+print(shuffled_weight)
+
+
 
 
 
