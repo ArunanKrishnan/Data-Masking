@@ -1,5 +1,8 @@
 import pandas as pd
-
+import random
+import string
+import struct
+import numpy as np
 # Load the input Excel file
 input_file = r'C:\Users\sethir919\Desktop\project\masking-input.xlsx'
 data = pd.read_excel(input_file)
@@ -14,25 +17,6 @@ def mask_name(weight):
     masked_name = three+four+"."+one+two
     return  masked_name 
 
-# Mask the names in the 'Name' column
-data['Weight'] = data['Weight'].apply(lambda x: mask_name(x))
-data.to_excel('output_file_shuffle.xlsx', index=False)
-print(data['Weight'])
-
-import random
-import string
-
-
-def generate_random_string(length):
-    x = ''.join(random.choice(string.digits) for _ in range(2))
-    y = ''.join(random.choice(string.digits) for _ in range(2))
-    
-    return (x +'.'+ y)
-
-data['Weight'] = data['Weight'].apply(lambda x: generate_random_string(x))
-data.to_excel('output_file_ranint.xlsx', index=False)
-          
-print(data['Weight'])
 
 def mask_float_values(input_list, mask_char='*', mask_start=0, mask_end=None):
     """
@@ -46,10 +30,6 @@ def mask_float_values(input_list, mask_char='*', mask_start=0, mask_end=None):
         if isinstance(masked_list[i], float):
             masked_list[i] = mask_char
     return masked_list
-masked_list = data["Weight"].apply(mask_float_values)
-secmasked=masked_list.apply()
-data.to_excel('output_file_param.xlsx', index=False)
-print(masked_list)
 
 def mask_float(value):#3,.5
     """
@@ -66,8 +46,102 @@ def mask_float(value):#3,.5
     rand=str(mask_value) * precision
     masked_value = round(float(str(masked_value) + '.' + rand),2) # append the mask_value
     return masked_value%100
-masked_value = data["Weight"].apply(mask_float)
-secmasked=masked_value.apply()
-data.to_excel('output_file_float.xlsx', index=False)
-print(masked_value)
+
+# define two floating-point numbers
+def mask_val(val):
+    a =76.89
+    b =val
+    # convert the numbers to their IEEE 754 binary representation
+    a_bin = struct.pack('!f', a)
+    b_bin = struct.pack('!f', b)
+    # perform a bitwise AND operation on the binary strings
+
+    result_bin = bytearray([x & y for x, y in zip(a_bin, b_bin)])
+# convert the result back to a floating-point number
+    result = struct.unpack('!f', result_bin)[0]
+    return result
+
+
+def mask_or(val):
+    a =150
+    b = 200
+    # convert the numbers to their IEEE 754 binary representation
+    a_bin = struct.pack('!f', a)
+    b_bin = struct.pack('!f', b)
+    # perform a bitwise AND operation on the binary strings
+
+    result_bin = bytearray([x | y for x, y in zip(a_bin, b_bin)])
+# convert the result back to a floating-point number
+    result = struct.unpack('!f', result_bin)[0]
+    return result
+
+def float_bit_shift_and_mask(x, shift_amount, mask):
+    # Convert the floating-point number to its IEEE 754 binary representation
+    x_bin = bytearray(struct.pack('!f', x))
+
+    # Shift the bits of the binary representation by the specified amount
+    x_bin[0] <<= shift_amount
+
+    # Mask the bits of the binary representation using the specified mask
+    x_bin[1] &= mask
+
+    # Convert the resulting binary string back to a floating-point number
+    result = struct.unpack('!f', bytes(x_bin))[0]
+
+    # Return the resulting floating-point number
+    return result
+
+# Define the shift amount and mask
+shift_amount = 1
+mask = 1111000011000
+
+#data['Weight'] = data['Weight'].apply(float_bit_shift_and_mask, shift_amount=shift_amount, mask=mask)
+#print(data['Weight'])
+
+def float_rotate(x):
+    r=150
+    # Convert float to binary string
+    bits = bin(struct.unpack('!I', struct.pack('!f', x))[0])
+    # Remove '0b' prefix and pad with zeros
+    bits = bits[2:].zfill(32)
+    # Perform rotation using bitwise operations
+    bits = bits[-r:] + bits[:-r]
+    # Convert binary string back to float
+    x_rotated = struct.unpack('!f', struct.pack('!I', int(bits, 2)))[0]
+    return round(x_rotated,2)
+#data['Weight']=data['Weight'].apply(float_rotate)
+#print(data['Weight'])
+
+def swap_floats_one(a,b):
+    """
+    Swaps the integer parts of two float values and returns them as a tuple.
+    """
+    a_int, a_dec = divmod(a, 9)
+    b_int, b_dec = divmod(b, 2)
+    return b_int + a_dec
+# Apply the swap_floats() function to the 'Weight' column
+# data['Weight'] = data['Weight'].apply(swap_floats_one,b=77)
+
+
+def swap_floats(a):
+    """
+    Swaps the integer parts of two float values and returns them as a tuple.
+    """
+    a_int, a_dec = divmod(a, 2)
+    return a_dec +a_int
+# Apply the swap_floats() function to the 'Weight' column
+#data['Weight'] = data['Weight'].apply(swap_floats)
+
+
+def shuffle_column(weight):
+    shuffled = np.random.permutation(weight)
+    return shuffled
+data['Weight'] = data['Weight'].apply(shuffle_column)
+print(data['Weight'])
+
+
+
+
+
+
 
