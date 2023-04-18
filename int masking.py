@@ -62,9 +62,22 @@ def mask_soundex(phone_number):
     masked_soundex = soundex_number[:3] + 'X' * (len(soundex_number) - 3)
     return masked_soundex
 
+df = pd.read_excel(r'C:\Users\kramal361\Downloads\maskinginput.xlsx')
+# Define function to apply randomized offset masking to a phone number
+def randomized_offset_masking(phone_number):
+    phone_number = str(phone_number)  # Convert phone number to string
+    length = len(phone_number)
+    offset = random.randint(0, length - 1)  # Choose random offset
+    num_digits_to_mask = random.randint(1, length - offset)  # Choose random number of digits to mask
+    masked_number = list(phone_number)
+    for i in range(offset, offset + num_digits_to_mask):
+        masked_number[i] = 'X'  # Mask selected digits with X's
+    masked_number = ''.join(masked_number)
+    return masked_number
+
 # Apply binary masking to phone number column
-df['Phone Number'] = df['Phone Number'].apply(binary_to_phone)
+df['Phone Number'] = df['Phone Number'].apply(randomized_offset_masking)
 
 # Write the new Excel file with masked phone numbers
-df.to_excel('binaryoutput.xlsx', index=False)
+df.to_excel('output.xlsx', index=False)
 print(df['Phone Number'])
