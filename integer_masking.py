@@ -300,5 +300,95 @@ result = xor_with_random(r'C:\Users\akrish451\Desktop\datamaskingproject\Data ma
 print(result)
 
 
+### NEED TO MODIFY
+
+import pandas as pd
+import random
+
+
+df = pd.read_excel('masking-input.xlsx')
+col_name = 'Employee ID'
+
+
+power_of_two = 2 ** random.randint(1, 10)
+
+
+df[col_name] = df[col_name].apply(lambda x: x + power_of_two)
+
+# Update the Excel file with the new values
+#with pd.ExcelWriter('example.xlsx') as writer:
+#    df.to_excel(writer, index=False)
+
+
+print("Original values:", column_values.tolist())
+print("Result values:", result_values)
+
+
+import pandas as pd
+
+
+file_path = "masking-input.xlsx"
+df = pd.read_excel(file_path)
+
+
+column_name = "Employee ID" 
+column_values = df[column_name]
+
+
+result_values = []
+
+for value in column_values:
+   
+    multiplied_digits = []
+    for digit in str(value):
+        multiplied_digits.append(str(int(digit) * 2))
+        
+    
+    final_digits = []
+    for i, digit in enumerate(multiplied_digits):
+        if int(digit) % 2 == 0:
+            final_digits.append(str(int(digit) + 1))
+        else:
+            final_digits.append(str(int(digit) - 1))
+    
+   
+    final_value = int("".join(final_digits))
+    
+  
+    result_values.append(final_value)
+
+
+print("Original values:", column_values.tolist())
+print("Result values:", result_values)
+
+
+import pandas as pd
+
+
+file_path = "masking-input.xlsx"
+df = pd.read_excel(file_path)
+
+
+column_name = "Employee ID"  
+column_values = df[column_name]
+
+
+result_values = []
+
+
+for value in column_values:
+    
+    first_two_digits = str(value)[:2]
+    binary_code = bin(int(first_two_digits))[2:].zfill(8)
+    
+    
+    rest_of_digits = str(value)[2:]
+    binary_code += bin(int(rest_of_digits))[2:].zfill(len(rest_of_digits) * 4)
+    
+    result_values.append(binary_code)
+
+
+print("Original values:", column_values.tolist())
+print("Binary codes:", result_values)
 
 
