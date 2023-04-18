@@ -3,7 +3,7 @@ import hashlib
 import random
 import string
 
-class ExcelMasker:
+class varchar:
     def __init__(self, input_file):
         self.df = pd.read_excel(input_file)
 
@@ -22,8 +22,9 @@ class ExcelMasker:
         return self
     
     def modify_integers(self, column_name):
-        random_str = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz', k=10))
-        prime = 1000000007
+        random_str = ''.join(random.choices(string.digits, k=10))
+
+        prime = 1
         self.df[column_name] = self.df[column_name].apply(lambda x: (x + int(random_str)) % prime)
         return self
     
@@ -35,8 +36,10 @@ class ExcelMasker:
         return self
     
     def mask_values(self, column_name):
-        self.df[column_name] = self.df[column_name].apply(lambda x: ''.join(['0' if c.isalpha() else str(int(c)*2) for c in x]))
+      
+        self.df[column_name] = self.df[column_name].apply(lambda x: ''.join(['0' if c.isalpha() else str(int(c)*2) for c in x[:10]]) + x[10:])
         return self
+
     
     def fisher_yates_shuffle(self, column_name):
         values = self.df[column_name].values.tolist()
@@ -47,12 +50,47 @@ class ExcelMasker:
         self.df[column_name] = values
         return self
     
-    def to_excel(self, output_file):
-        self.df.to_excel(output_file, index=False)
+   # def to_excel(self, output_file):
+    #    self.df.to_excel(output_file, index=False)
+varchar = varchar(r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\DM 2.0\Data-Masking\data\masking-input.xlsx')
+
+# Substitute numbers
+num_to_str_dict = {1: 'one', 2: 'two', 3: 'three'}
+str_to_num_dict = {'four': 4, 'five': 5}
+result1 = varchar.substitute_numbers('Driver License Number', num_to_str_dict, str_to_num_dict).df
+
+# Hide data
+result2 = varchar.hide_data('Age').df
+
+# Hash data
+result3 = varchar.hash_data('Driver License Number').df
+
+# Modify integers
+result4 = varchar.modify_integers('Employee ID').df
+
+# Threshold values
+result5 = varchar.threshold_values('Driver License Number').df
+
+# Mask values
+# Mask values
+result6 = varchar.mask_values('Driver License Number').df
 
 
-em = ExcelMasker(r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\DM 2.0\Data-Masking\data\masking-input.xlsx')
-em.substitute_numbers('Passport Number', {1: 'one'}, {'one': 1})
-em.hash_data('Passport Number')
-em.mask_values('Passport Number')
-em.to_excel('output_file.xlsx')
+
+
+# Print masked values with first 10 characters
+for value in result6['Driver License Number']:
+    print(value[:10])
+
+
+# Fisher-Yates shuffle
+result7 = varchar.fisher_yates_shuffle('Driver License Number').df
+
+# Print results
+#print("Substitute numbers:\n", result1)
+#print("Hide data:\n", result2)
+#print("Hash data:\n", result3)
+print("Modify integers:\n", result4)
+#print("Threshold values:\n", result5)
+#print("Mask values:\n", result6)
+#print("Fisher-Yates shuffle:\n", result7)
