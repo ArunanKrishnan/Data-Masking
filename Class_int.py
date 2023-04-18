@@ -76,7 +76,7 @@ class DataMasker:
         print(result)
 
 # Example usage
-file_path = r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\DM 2.0\Data-Masking\data\masking-input.xlsx'
+file_path = r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\data masking 2.0\Data-Masking\data\masking-input.xlsx'
 data_masker = DataMasker(file_path)
 
 data_masker.add_fixed_value('Employee ID', 1111)
