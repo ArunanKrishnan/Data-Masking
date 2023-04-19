@@ -1,17 +1,18 @@
 import pandas as pd
 import struct
+import json
 import numpy as np
 from functools import partial
 
 # Load the input Excel file
 input_file = r'C:\Users\sethir919\Desktop\masking project\Data-Obfuscation\data\masking-input.xlsx'
 data = pd.read_excel(input_file)
-
+'''
 def chain(start, mask_func):
     res = start
     for func in mask_func:
         res = res.apply(func)
-    return res
+    return res '''
 
 # Define a function to mask a single name
 def mask_float_by_str(weight): #56.64
@@ -127,13 +128,22 @@ def mask_float_by_swap2(weight):
     return a_dec +a_int
 fun8=data['Weight'].apply(mask_float_by_swap2)
 
+'''
 mask_func=[
     partial(mask_float_by_add),
-    partial(mask_float_by_swap1),
-    partial(mask_float_by_or)
+    partial(mask_float_by_swap1)
 ]
 masked_data = chain(data['Weight'], mask_func)
-print(masked_data)
+print(masked_data) '''
 
 #store=fun2.apply(mask_float_by_add)
 #print(store)
+
+'''
+with open('C:\Users\sethir919\Desktop\masking project\Data-Obfuscation\trial.json', 'r') as f:
+    data = json.load(f)
+
+function_name = data['Weight']
+input_data = data['input_file']
+output_data = globals()[function_name](input_data)
+print(output_data) '''
