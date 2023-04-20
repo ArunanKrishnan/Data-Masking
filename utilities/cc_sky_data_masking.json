@@ -1,0 +1,16 @@
+{
+  "function": "mask_float",
+  "input_file": "C:\\Users\\sethir919\\Desktop\\masking project\\Data-Obfuscation\\data\\masking-input.xlsx",
+  "output_file": "output_file_new.xlsx",
+  "column_info": [
+    {
+      "name": "Weight",
+      "type": "FLOAT",
+      "mode": "REQUIRED",
+      "col_type": {
+        "ApplyMasking": ["mask_float_by_str","mask_float_by_swap2"]
+      } 
+    }
+  ]
+}
+

@@ -1,18 +1,15 @@
+import json
 import pandas as pd
 import struct
-import json
 import numpy as np
-from functools import partial
 
-# Load the input Excel file
-input_file = r'C:\Users\sethir919\Desktop\masking project\Data-Obfuscation\data\masking-input.xlsx'
-data = pd.read_excel(input_file)
-'''
-def chain(start, mask_func):
-    res = start
-    for func in mask_func:
-        res = res.apply(func)
-    return res '''
+# Load the JSON configuration file
+with open('cc_sky_data_masking.json', 'r') as f:
+    config = json.load(f)
+
+# Load the input data from an Excel file
+input_file = config["input_file"]
+data = pd.read_excel(input_file) 
 
 # Define a function to mask a single name
 def mask_float_by_str(weight): #56.64
@@ -52,7 +49,6 @@ def mask_float_by_add(weight):
     a_bin = struct.pack('!f', a)
     b_bin = struct.pack('!f', b)
     # perform a bitwise AND operation on the binary strings
-
     result_bin = bytearray([x & y for x, y in zip(a_bin, b_bin)])
 # convert the result back to a floating-point number
     result = struct.unpack('!f', result_bin)[0]
@@ -67,7 +63,6 @@ def mask_float_by_or(weight):
     a_bin = struct.pack('!f', a)
     b_bin = struct.pack('!f', b)
     # perform a bitwise OR operation on the binary strings
-
     result_bin = bytearray([x | y for x, y in zip(a_bin, b_bin)])
 # convert the result back to a floating-point number
     result = struct.unpack('!f', result_bin)[0]
@@ -81,16 +76,12 @@ def mask_float_by_shift(x):
     mask = 1111000011000
     # Convert the floating-point number to its IEEE 754 binary representation
     x_bin = bytearray(struct.pack('!f', x))
-
     # Shift the bits of the binary representation by the specified amount
     x_bin[0] <<= shift_amount
-
     # Mask the bits of the binary representation using the specified mask
     x_bin[1] &= mask
-
     # Convert the resulting binary string back to a floating-point number
     result = struct.unpack('!f', bytes(x_bin))[0]
-
     # Return the resulting floating-point number
     return result
 fun5=data['Weight'].apply(mask_float_by_shift)
@@ -128,22 +119,49 @@ def mask_float_by_swap2(weight):
     return a_dec +a_int
 fun8=data['Weight'].apply(mask_float_by_swap2)
 
-'''
-mask_func=[
-    partial(mask_float_by_add),
-    partial(mask_float_by_swap1)
-]
-masked_data = chain(data['Weight'], mask_func)
-print(masked_data) '''
+def mask_float(function_name):
+    if function_name == 'mask_float_by_str':
+# Apply mask_float_by_str function
+        return data['Weight'].apply(mask_float_by_str)
+    elif function_name == 'mask_float_by_precision':
+# Apply mask_float_by_swap1 function
+        return data['Weight'].apply(mask_float_by_precision)
+    elif function_name == 'mask_float_by_add':
+# Apply mask_float_by_swap1 function
+        return data['Weight'].apply(mask_float_by_add)
+    elif function_name == 'mask_float_by_or':
+# Apply mask_float_by_swap1 function
+        return data['Weight'].apply(mask_float_by_or)
+    elif function_name == 'mask_float_by_shift':
+# Apply mask_float_by_swap1 function
+        return data['Weight'].apply(mask_float_by_shift)
+    elif function_name == 'mask_float_by_rotate':
+# Apply mask_float_by_swap1 function
+        return data['Weight'].apply(mask_float_by_rotate)
+    elif function_name == 'mask_float_by_swap1':
+# Apply mask_float_by_swap1 function
+        return data['Weight'].apply(mask_float_by_swap1)
+    elif function_name == 'mask_float_by_swap2':
+# Apply mask_float_by_swap1 function
+        return data['Weight'].apply(mask_float_by_swap2)
+    else:
+# Invalid function name
+        print(f"Invalid function name: {function_name}")
 
-#store=fun2.apply(mask_float_by_add)
-#print(store)
+# Apply masking to the specified columns
+for col_config in config['column_info']:
+    if 'ApplyMasking' in col_config['col_type']:
+        col_name = col_config['name']
+        col_type = col_config['type']
+        col_data = data[col_name]
+        functions_to_apply = col_config['col_type']['ApplyMasking']
 
-'''
-with open('C:\Users\sethir919\Desktop\masking project\Data-Obfuscation\trial.json', 'r') as f:
-    data = json.load(f)
+        for function_name in functions_to_apply:
+            col_data = mask_float(function_name)
 
-function_name = data['Weight']
-input_data = data['input_file']
-output_data = globals()[function_name](input_data)
-print(output_data) '''
+        data[col_name] = col_data
+
+# Write the masked data to a new Excel file
+output_file = config['output_file']
+data.to_excel(output_file, index=False)
+
