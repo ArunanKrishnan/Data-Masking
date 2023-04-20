@@ -1,16 +1,15 @@
 {
-  "function": "mask_float",
+  "function": "mask_string",
   "input_file": "C:\\Users\\sethir919\\Desktop\\masking project\\Data-Obfuscation\\data\\masking-input.xlsx",
   "output_file": "output_file_new.xlsx",
   "column_info": [
     {
-      "name": "Weight",
-      "type": "FLOAT",
+      "name": "Name",
+      "type": "STRING",
       "mode": "REQUIRED",
       "col_type": {
-        "ApplyMasking": ["mask_float_by_str","mask_float_by_swap2"]
+        "ApplyMasking": ["mask_string_by_asterick"]
       } 
     }
   ]
 }
-

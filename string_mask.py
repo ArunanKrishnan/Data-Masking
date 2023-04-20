@@ -165,5 +165,5 @@ for col_config in config['column_info']:
         data[col_name] = col_data
 
 # Write the masked data to a new Excel file
-output_file = config['output_file_string']
+output_file = config['output_file']
 data.to_excel(output_file, index=False)
