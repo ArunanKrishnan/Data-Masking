@@ -5,7 +5,7 @@ import os
 import random
 
 # Load the JSON configuration file
-with open('cc_sky_data_masking.json', 'r') as f:
+with open('check.json', 'r') as f:
     config = json.load(f)
 
 #import input data

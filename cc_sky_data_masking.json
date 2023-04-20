@@ -1,14 +1,15 @@
+
 {
-  "function": "mask_email",
+  "function": "mask_string",
   "input_file": "C:\\Users\\sethir919\\Desktop\\masking project\\Data-Obfuscation\\data\\masking-input.xlsx",
   "output_file": "output_file_new.xlsx",
   "column_info": [
     {
-      "name": "Email Address",
+      "name": "Name",
       "type": "STRING",
       "mode": "REQUIRED",
       "col_type": {
-        "ApplyMasking": ["mask_string_by_asterick"]
+        "ApplyMasking": ["mask_string_by_durstenfeld_shuffle"]
       } 
     }
   ]
