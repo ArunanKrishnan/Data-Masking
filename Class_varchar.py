@@ -52,7 +52,7 @@ class varchar:
     
    # def to_excel(self, output_file):
     #    self.df.to_excel(output_file, index=False)
-varchar = varchar(r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\DM 2.0\Data-Masking\data\masking-input.xlsx')
+varchar = varchar(r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\dm\Data-Masking\data\masking-input.xlsx')
 
 # Substitute numbers
 num_to_str_dict = {1: 'one', 2: 'two', 3: 'three'}
@@ -87,10 +87,10 @@ for value in result6['Driver License Number']:
 result7 = varchar.fisher_yates_shuffle('Driver License Number').df
 
 # Print results
-#print("Substitute numbers:\n", result1)
-#print("Hide data:\n", result2)
-#print("Hash data:\n", result3)
+print("Substitute numbers:\n", result1)
+print("Hide data:\n", result2)
+print("Hash data:\n", result3)
 print("Modify integers:\n", result4)
-#print("Threshold values:\n", result5)
-#print("Mask values:\n", result6)
-#print("Fisher-Yates shuffle:\n", result7)
+print("Threshold values:\n", result5)
+print("Mask values:\n", result6)
+print("Fisher-Yates shuffle:\n", result7)

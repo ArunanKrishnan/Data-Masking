@@ -27,7 +27,7 @@ def shuffle_digits(df: pd.DataFrame, column_name: str) -> pd.Series:
     return pd.Series(result_values)
 
 # Chain the three functions together
-file_path = r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\DM 2.0\Data-Masking\data\masking-input.xlsx'
+file_path = r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\dm\Data-Masking\data\masking-input.xlsx'
 column_name = "Employee ID"
 
 df = pd.read_excel(file_path)
