@@ -1,226 +1,3 @@
-import pandas as pd
-import random
-
-def mask_dataframe(file_path):
-    """
-    This function shuffles and masks the data in an Excel file using Pandas and print the output file.
-    
-    Args:
-    file_path (str): The file path of the input Excel file.
-    
-    Returns:
-    pandas.DataFrame: The shuffled and masked DataFrame.
-    """
-    
-    # Load data from Excel file into a Pandas DataFrame
-    df = pd.read_excel(r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\data\masking-input.xlsx')
-
-    # Shuffle the index of the DataFrame
-    df = df.sample(frac=1).reset_index(drop=True)
-
-    # Shuffle the rows across different columns
-    num_cols = len(df.columns)
-    for i in range(num_cols):
-        df.iloc[:, i] = df.iloc[:, i].sample(frac=1).reset_index(drop=True)
-
-    # creating a list to store the masked employee IDs
-    result_values = []
-
-    # Shuffle the index of the DataFrame
-    df = df.sample(frac=1).reset_index(drop=True)
-
-    # Shuffle the rows across different columns
-    num_cols = len(df.columns)
-    for i in range(num_cols):
-        df.iloc[:, i] = df.iloc[:, i].sample(frac=1).reset_index(drop=True)
-
-    # Shuffle the phone number and bank account number columns
-    num_cols = ["Phone Number", "Bank Account Number"]
-    for column_name in num_cols:
-        column_values = df[column_name]
-
-        for i, value in enumerate(column_values):
-            digits_list = [int(digit) for digit in str(value)]
-            random.shuffle(digits_list)
-            result_value = int("".join(map(str, digits_list)))
-            df.at[i, column_name] = result_value
-
-    # Mask the email addresses
-    column_name = "Email address"  
-    column_values = df[column_name]
-
-    for i, value in enumerate(column_values):
-        # Split the email address into username and domain parts
-        username, domain = value.split('@')
-
-        # Shuffle the characters in the username part
-        username_list = list(username)
-        random.shuffle(username_list)
-        shuffled_username = ''.join(username_list)
-
-        # Combine the shuffled username and original domain
-        masked_email = f"{shuffled_username}@{domain}"
-
-        # Update the email address column with the masked value
-        df.at[i, column_name] = masked_email
-
-    # Save the shuffled and masked DataFrame to the same Excel file
-    #df.to_excel(file_path, index=False)
-    
-    return df
-df = mask_dataframe(r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking project\Data\masking-input.xlsx')
-print(df)
-
-def add_fixed_value(data_file_path, column_name, fixed_value):
-    """
-    Adds a fixed value to each value in a specified column of a given Excel file using pandas.
-    
-    Parameters:
-    - data_file_path (str): The file path of the Excel file to read.
-    - column_name (str): The name of the column to perform the operation on.
-    - fixed_value (int or float): The value to add to each value in the column.
-    
-    Returns:
-    - df (pandas.DataFrame): The updated DataFrame with the new column added.
-    """
-    df = pd.read_excel(data_file_path)
-    data_column = df[column_name]
-    df['Updated Data'] = data_column + fixed_value
-    return df
-updated_df = add_fixed_value(r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\data\masking-input.xlsx', 'Employee ID', 1111)
-
-
-def divide_and_swap_column(data_file_path, column_name):
-    """
-    Divides a column into two halves, swaps the two halves, and saves the resulting DataFrame to an Excel file.
-    
-    Parameters:
-    - data_file_path (str): The file path of the Excel file to read.
-    - column_name (str): The name of the column to perform the operation on.
-    
-    Returns:
-    - swapped_df (pandas.DataFrame): The DataFrame with the swapped column values.
-    """
-    # read data from Excel file
-    data = pd.read_excel(data_file_path)
-
-    # define function to divide and swap column values
-    def divide_and_swap(numbers):
-        """
-        Divides a list of numbers into two halves, swaps the two halves, and returns the resulting list.
-        
-        Parameters:
-        - numbers (list of int or float): The list of numbers to divide and swap.
-        
-        Returns:
-        - swapped_numbers (list of int or float): The list of numbers with the swapped halves.
-        """
-        length = len(numbers)
-        if length % 2 == 0:
-            half = length // 2
-            first_half = numbers[:half]
-            second_half = numbers[half:]
-            swapped_numbers = second_half + first_half
-            return swapped_numbers
-        else:
-            return "Error: List length must be even"
-
-    # convert column to list of numbers and apply divide_and_swap function
-    numbers = data[column_name].tolist()
-    swapped_numbers = divide_and_swap(numbers)
-
-    # create new DataFrame with swapped column values and save to Excel file
-    swapped_df = pd.DataFrame({f'Swapped {column_name}': swapped_numbers})
-    swapped_df.to_excel('op_divide&swap.xlsx', index=False)
-
-    return swapped_df
-swapped_df = divide_and_swap_column(r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\data\masking-input.xlsx', 'Employee ID')
-
-
-def multiply_and_subtract(df: pd.DataFrame, column_name: str) -> pd.Series:
-    """
-    Multiply the values in the specified column of a DataFrame with a random number
-    between 0 and 1, and subtract the result from the original value.
-
-    Args:
-        df (pd.DataFrame): The DataFrame containing the data to be obfuscated.
-        column_name (str): The name of the column containing the data to be obfuscated.
-
-    Returns:
-        pd.Series: A new pandas Series object containing the obfuscated data.
-    """
-    column_values = df[column_name]
-    result_values = []
-    for value in column_values:
-        random_number = random.uniform(0, 1)
-        result = round(value - (value * random_number))
-        result_values.append(result)
-    return pd.Series(result_values)
-
-# Example usage:
-file_path = r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\data\masking-input.xlsx'
-df = pd.read_excel(file_path)
-column_name = "Employee ID"
-result_column = multiply_and_subtract(df, column_name)
-print("Original values:", df[column_name].tolist())
-print("Result values:", result_column.tolist())
-
-
-def shuffle_column_numbers(file_path, column_name):
-    """
-    This function shuffles the integers within a given column of an excel file.
-
-    Parameters:
-    file_path (str): The file path of the input excel file.
-    column_name (str): The name of the column to shuffle.
-
-    Returns:
-    A list of shuffled numbers.
-    """
-
-    df = pd.read_excel(file_path)
-    column_values = df[column_name]
-    rounded_numbers = [math.ceil(num) for num in column_values]
-    indexes = list(range(len(column_values)))
-    random.shuffle(indexes)
-    shuffled_numbers = [rounded_numbers[index] for index in indexes]
-
-    print("Original values:", column_values.tolist())
-    print("Shuffled numbers:", shuffled_numbers)
-
-    return shuffled_numbers
-file_path = r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\data\masking-input.xlsx'
-column_name = "Employee ID"
-shuffled_numbers = shuffle_column_numbers(file_path, column_name)
-
-
-def shuffle_digits(df: pd.DataFrame, column_name: str) -> pd.Series:
-    """
-    Shuffle the digits of each value in the specified column of a DataFrame.
-
-    Args:
-        df (pd.DataFrame): The DataFrame containing the data to be obfuscated.
-        column_name (str): The name of the column containing the data to be obfuscated.
-
-    Returns:
-        pd.Series: A new pandas Series object containing the obfuscated data.
-    """
-    column_values = df[column_name]
-    result_values = []
-    for value in column_values:
-        digits_list = [int(digit) for digit in str(value)]
-        random.shuffle(digits_list)
-        result_value = int("".join(map(str, digits_list)))
-        result_values.append(result_value)
-    return pd.Series(result_values)
-
-# Example usage:
-file_path = r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\data\masking-input.xlsx'
-df = pd.read_excel(file_path)
-column_name = "Employee ID"
-result_column = shuffle_digits(df, column_name)
-print("Original values:", df[column_name].tolist())
-print("Result values:", result_column.tolist())
 
 
 
@@ -258,7 +35,7 @@ def xor_with_random_and(input_file):
     
     # Convert the list of XOR results to a DataFrame and return it
     return pd.DataFrame(xor_results)
-result = xor_with_random_and(r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\DM 2.0\Data-Masking\data\masking-input.xlsx')
+result = xor_with_random_and(r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\dm\Data-Masking\data\masking-input.xlsx')
 print(result)
 
 
@@ -296,99 +73,82 @@ def xor_with_random(input_file):
     
     # Convert the list of XOR results to a DataFrame and return it
     return pd.DataFrame(xor_results)
-result = xor_with_random(r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\DM 2.0\Data-Masking\data\masking-input.xlsx')
+result = xor_with_random(r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\dm\Data-Masking\data\masking-input.xlsx')
 print(result)
-
-
-### NEED TO MODIFY
 
 import pandas as pd
 import random
 
 
-df = pd.read_excel('masking-input.xlsx')
-col_name = 'Employee ID'
+def mask_employee_ids(file_path, column_name):
+    # Read the Excel file
+    df = pd.read_excel(file_path)
+
+    # Generate a random power of 2
+    power_of_two = 2 ** random.randint(1, 10)
+
+    # Apply the mask to the specified column
+    df[column_name] = df[column_name].apply(lambda x: x + power_of_two)
+
+    # Save the modified data to the Excel file
+    with pd.ExcelWriter(file_path) as writer:
+        df.to_excel(writer, index=False)
+
+    # Print the original and modified values for verification
+    print("Original values:", df[column_name].tolist())
+    print("Masked values:", df[column_name].apply(lambda x: x - power_of_two).tolist())
 
 
-power_of_two = 2 ** random.randint(1, 10)
+def modify_column_values(file_path, column_name):
+    df = pd.read_excel(file_path)
+    column_values = df[column_name]
+
+    result_values = []
+    for value in column_values:
+        multiplied_digits = []
+        for digit in str(value):
+            multiplied_digits.append(str(int(digit) * 2))
+
+        final_digits = []
+        for i, digit in enumerate(multiplied_digits):
+            if int(digit) % 2 == 0:
+                final_digits.append(str(int(digit) + 1))
+            else:
+                final_digits.append(str(int(digit) - 1))
+
+        final_value = int("".join(final_digits))
+        result_values.append(final_value)
+
+    return result_values
 
 
-df[col_name] = df[col_name].apply(lambda x: x + power_of_two)
+def generate_binary_codes(file_path, column_name):
+    df = pd.read_excel(file_path)
+    column_values = df[column_name]
 
-# Update the Excel file with the new values
-#with pd.ExcelWriter('example.xlsx') as writer:
-#    df.to_excel(writer, index=False)
+    result_values = []
 
+    for value in column_values:
 
-print("Original values:", column_values.tolist())
-print("Result values:", result_values)
+        first_two_digits = str(value)[:2]
+        binary_code = bin(int(first_two_digits))[2:].zfill(8)
 
+        rest_of_digits = str(value)[2:]
+        binary_code += bin(int(rest_of_digits))[2:].zfill(len(rest_of_digits) * 4)
 
-import pandas as pd
+        result_values.append(binary_code)
 
-
-file_path = "masking-input.xlsx"
-df = pd.read_excel(file_path)
-
-
-column_name = "Employee ID" 
-column_values = df[column_name]
+    return result_values
 
 
-result_values = []
+# Call the functions and print the output
+file_path = r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\dm\Data-Masking\data\masking-input.xlsx'
+column_name = "Employee ID"
 
-for value in column_values:
-   
-    multiplied_digits = []
-    for digit in str(value):
-        multiplied_digits.append(str(int(digit) * 2))
-        
-    
-    final_digits = []
-    for i, digit in enumerate(multiplied_digits):
-        if int(digit) % 2 == 0:
-            final_digits.append(str(int(digit) + 1))
-        else:
-            final_digits.append(str(int(digit) - 1))
-    
-   
-    final_value = int("".join(final_digits))
-    
-  
-    result_values.append(final_value)
-
-
-print("Original values:", column_values.tolist())
-print("Result values:", result_values)
-
-
-import pandas as pd
-
-
-file_path = "masking-input.xlsx"
-df = pd.read_excel(file_path)
-
-
-column_name = "Employee ID"  
-column_values = df[column_name]
-
-
-result_values = []
-
-
-for value in column_values:
-    
-    first_two_digits = str(value)[:2]
-    binary_code = bin(int(first_two_digits))[2:].zfill(8)
-    
-    
-    rest_of_digits = str(value)[2:]
-    binary_code += bin(int(rest_of_digits))[2:].zfill(len(rest_of_digits) * 4)
-    
-    result_values.append(binary_code)
-
-
-print("Original values:", column_values.tolist())
-print("Binary codes:", result_values)
-
+print("Mask employee IDs:")
+mask_employee_ids(file_path, column_name)
+print("\nModify column values:")
+print(modify_column_values(file_path, column_name))
+print("\nGenerate binary codes:")
+print(generate_binary_codes(file_path, column_name))
 
