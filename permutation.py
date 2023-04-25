@@ -24,7 +24,7 @@ def mask_dataframe(file_path):
         df[df.columns[i]] = df[df.columns[i]].sample(frac=1).reset_index(drop=True)
 
     # Shuffle the phone number and bank account number columns
-    num_cols = ["Phone Number", "Bank Account Number"]
+    num_cols = ["Pin code", "Employee ID"]
     for column_name in num_cols:
         column_values = df[column_name]
 

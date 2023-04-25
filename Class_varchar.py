@@ -24,11 +24,11 @@ class varchar:
     def modify_integers(self, column_name):
         random_str = ''.join(random.choices(string.digits, k=10))
 
-        prime = 1
+        prime = 997
         self.df[column_name] = self.df[column_name].apply(lambda x: (x + int(random_str)) % prime)
         return self
     
-    def threshold_values(self, column_name):
+    #def threshold_values(self, column_name):
         self.df['Half_Value'] = self.df[column_name].apply(lambda x: (sum(1 for c in str(x) if c.isdigit())/2) + 
                                                                 (sum(1 for c in str(x) if c.isalpha())/2))
         self.df['Opposite_Value'] = self.df[column_name].apply(lambda x: ''.join(random.choices(string.ascii_letters + string.digits, k=10)))
@@ -69,7 +69,7 @@ result3 = varchar.hash_data('Driver License Number').df
 result4 = varchar.modify_integers('Employee ID').df
 
 # Threshold values
-result5 = varchar.threshold_values('Driver License Number').df
+#result5 = varchar.threshold_values('Driver License Number').df
 
 # Mask values
 # Mask values
@@ -91,6 +91,6 @@ print("Substitute numbers:\n", result1)
 print("Hide data:\n", result2)
 print("Hash data:\n", result3)
 print("Modify integers:\n", result4)
-print("Threshold values:\n", result5)
+#print("Threshold values:\n", result5)
 print("Mask values:\n", result6)
 print("Fisher-Yates shuffle:\n", result7)
