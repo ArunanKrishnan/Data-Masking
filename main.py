@@ -5,7 +5,7 @@ import pandas as pd
 
 def main():
     #Load the JSON file specified by the end user
-    with open('crt_plain.json', 'r') as f:
+    with open('end_user.json', 'r') as f:
         user_input = json.load(f)
 
     #Load the Excel file using Pandas
