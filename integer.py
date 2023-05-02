@@ -66,7 +66,7 @@ i
     # Save the shuffled and masked DataFrame to the same Excel file
     #df.to_excel(file_path, index=False)
     
-    return df
+        return df
 df = mask_dataframe(r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking project\Data\masking-input.xlsx')
 print(df)
 
