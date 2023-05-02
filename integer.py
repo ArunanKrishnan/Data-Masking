@@ -16,8 +16,7 @@ def mask_dataframe(file_path):
     df = pd.read_excel(r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\data\masking-input.xlsx')
 
     # Shuffle the index of the DataFrame
-    df = df.sample(frac=1).reset_index(drop=True)
-
+i
     # Shuffle the rows across different columns
     num_cols = len(df.columns)
     for i in range(num_cols):
