@@ -72,7 +72,7 @@ def modify_list_values(file_path, column_name):
 
     # Return the modified list
     return result_list
-result = modify_list_values('input_file.xlsx', 'Column1')
+result = modify_list_values(r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\dm\Data-Masking\data\masking-input.xlsx', 'Column1')
 print(result)
 import pandas as pd
 
@@ -85,7 +85,7 @@ def add_fixed_value(file_path, column_name, fixed_value):
 
     # Return the updated DataFrame
     return df
-result = add_fixed_value('input_file.xlsx', 'Column1', 10)
+result = add_fixed_value('C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\dm\Data-Masking\data\masking-input.xlsx', 'Column1', 10)
 print(result)
 import pandas as pd
 
@@ -109,7 +109,7 @@ def divide_and_swap_column(file_path, column_name):
         return df
     else:
         print("Error: List length must be even")
-result = divide_and_swap_column('input_file.xlsx', 'Column1')
+result = divide_and_swap_column(r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\dm\Data-Masking\data\masking-input.xlsx', 'Column1')
 print(result)
 import pandas as pd
 import random
@@ -130,7 +130,7 @@ def multiply_and_subtract(file_path, column_name):
 
     # Return the output list
     return df[f'Multiplied and Subtracted {column_name}'].tolist()
-file_path = 'path/to/your/file.xlsx'
+file_path = r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\dm\Data-Masking\data\masking-input.xlsx'
 column_name = 'YourColumnName'
 result = multiply_and_subtract(file_path, column_name)
 print(result)
@@ -163,5 +163,5 @@ def sub_fixed_value(file_path, column_name, fixed_value):
 
     # Return the updated DataFrame
     return df
-result = sub_fixed_value('input_file.xlsx', 'Column1', 100)
+result = sub_fixed_value(r'C:\Users\akrish451\Desktop\datamaskingproject\Data masking\Data-Masking\dm\Data-Masking\data\masking-input.xlsx', 'Column1', 100)
 print(result)
