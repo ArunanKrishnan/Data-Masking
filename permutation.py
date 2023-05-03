@@ -59,35 +59,38 @@ def mask_dataframe(file_path):
         # Update the email address column with the masked value
         df.at[i, column_name] = masked_email
 
-    # Shuffle the names in the Name column
+
+
+     # Shuffle the names in the Name column
     column_name = "Name"
     column_values = df[column_name]
 
-    # Split the names into first and last name lists
+# Split the names into first and last name lists
     first_list = []
     last_list = []
     for name in column_values:
-        first, last = name.split()
-        first_list.append(first)
-        last_list.append(last)
+       first, last = name.split(" ")
+       first_list.append(first)
+       last_list.append(last)
 
-    # Shuffle the first and last name lists
+# Shuffle the first and last name lists
     random.shuffle(first_list)
     random.shuffle(last_list)
 
-    # Combine the shuffled first and last names to form the shuffled names list
+# Combine the shuffled first and last names to form the shuffled names list
     shuffled_names = []
     for i in range(len(column_values)):
         shuffled_name = f"{first_list[i]} {last_list[i]}"
         shuffled_names.append(shuffled_name)
 
-    # Update the Name column with the shuffled names
+# Update the Name column with the shuffled names
     df[column_name] = shuffled_names
 
-    # Print the shuffled and masked DataFrame
+# Print the shuffled and masked DataFrame
     print(df)
 
     return df
+
 
 
 # Test the function
