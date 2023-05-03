@@ -79,9 +79,8 @@ result6 = varchar.mask_values('Driver License Number').df
 
 
 # Print masked values with first 10 characters
-for value in result6['Driver License Number']:
-    print(value[:10])
-
+#for value in result1['Driver License Number']:
+  #  print(value[10:])
 
 # Fisher-Yates shuffle
 result7 = varchar.fisher_yates_shuffle('Driver License Number').df
