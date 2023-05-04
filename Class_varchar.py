@@ -83,7 +83,7 @@ result6 = varchar.mask_values('Driver License Number').df
   #  print(value[10:])
 
 # Fisher-Yates shuffle
-result7 = varchar.fisher_yates_shuffle('Driver License Number').df
+result7 = varchar.fisher_yates_shuffle('User ID').df
 
 # Print results
 print("Substitute numbers:\n", result1)
