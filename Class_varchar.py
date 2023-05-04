@@ -24,7 +24,7 @@ class varchar:
     def modify_integers(self, column_name):
         random_str = ''.join(random.choices(string.digits, k=10))
 
-        prime = 997
+        prime = 282589933
         self.df[column_name] = self.df[column_name].apply(lambda x: (x + int(random_str)) % prime)
         return self
     
@@ -73,17 +73,17 @@ result4 = varchar.modify_integers('Employee ID').df
 
 # Mask values
 # Mask values
-result6 = varchar.mask_values('Driver License Number').df
+result6 = varchar.mask_values('User ID').df
 
 
 
 
 # Print masked values with first 10 characters
-#for value in result1['Driver License Number']:
-  #  print(value[10:])
+for value in result1['Driver License Number']:
+    print(value[10:])
 
 # Fisher-Yates shuffle
-result7 = varchar.fisher_yates_shuffle('User ID').df
+result7 = varchar.fisher_yates_shuffle('Street name').df
 
 # Print results
 print("Substitute numbers:\n", result1)
