@@ -1,0 +1,15 @@
+{
+    "function": "mask_email",
+    "input_file": "C:\\Users\\kramal361\\Desktop\\data masking 2.0\\Data-Masking\\dm\\Data-Masking\\data\\masking-input.xlsx",
+    "output_file": "output_file_new.xlsx",
+    "column_info": [
+      {
+        "name": "Email address",
+        "type": "STRING",
+        "mode": "REQUIRED",
+        "col_type": {
+          "ApplyMasking": ["obfuscate_email","pad_email"]
+        } 
+      }
+    ]
+  }

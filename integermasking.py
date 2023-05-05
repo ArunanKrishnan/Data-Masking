@@ -20,14 +20,13 @@ def binary_to_phone(binary_number):
         elif i == 7:
             phone_number += '-'
     return phone_number
-
-df = pd.read_excel(r'C:\Users\kramal361\Downloads\maskinginput.xlsx', dtype={'Phone Number': str})
+fun1=df['Phone Number'].apply(binary_to_phone)
 
 # Define function to mask all digits in the phone number column
 def mask_consonants(phone_number):
     return ''.join(['X' if c.isdigit() else c for c in str(phone_number)])
+fun2=df['Phone Number'].apply(mask_consonants)
 
-df = pd.read_excel(r'C:\Users\kramal361\Downloads\maskinginput.xlsx')
 # Define function to perform reversal masking on a phone number
 def mask_reversal(phone_number):
     # Reverse the phone number
@@ -40,8 +39,8 @@ def mask_reversal(phone_number):
     masked_number = ''.join(['X' if i in masked_positions else digit for i, digit in enumerate(reversed_number)])
     # Reverse the masked number and return it
     return masked_number[::-1]
+fun3=df['Phone Number'].apply(mask_reversal)
 
-df = pd.read_excel(r'C:\Users\kramal361\Downloads\maskinginput.xlsx')
 def mask_soundex(phone_number):
     soundex_codes = {
         '0': 'Z',
@@ -61,8 +60,8 @@ def mask_soundex(phone_number):
             soundex_number += soundex_codes[digit]
     masked_soundex = soundex_number[:3] + 'X' * (len(soundex_number) - 3)
     return masked_soundex
+fun4=df['Phone Number'].apply(mask_soundex)
 
-df = pd.read_excel(r'C:\Users\kramal361\Downloads\maskinginput.xlsx')
 # Define function to apply randomized offset masking to a phone number
 def randomized_offset_masking(phone_number):
     phone_number = str(phone_number)  # Convert phone number to string
@@ -74,10 +73,11 @@ def randomized_offset_masking(phone_number):
         masked_number[i] = 'X'  # Mask selected digits with X's
     masked_number = ''.join(masked_number)
     return masked_number
+fun5=df['Phone Number'].apply(randomized_offset_masking)
+print(fun5)
 
-# Apply binary masking to phone number column
-df['Phone Number'] = df['Phone Number'].apply(randomized_offset_masking)
 
-# Write the new Excel file with masked phone numbers
-df.to_excel('output.xlsx', index=False)
-print(df['Phone Number'])
+
+
+
+
