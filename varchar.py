@@ -1,48 +1,47 @@
 import pandas as pd
 import random
-#import input data
+
 df = pd.read_excel(r'C:\Users\kramal361\Downloads\masking-input (2).xlsx')
 def shuffle_email(email):
+    mask = []
     email_parts = email.split('@')
     username = email_parts[0]
     domain = email_parts[1]
     shuffled_username = ''.join(random.sample(username, len(username)))
     shuffled_email = shuffled_username + '@' + domain
-    return shuffled_email
+    mask.append(shuffled_email)
+    return mask
 #df['Email address'] = df['Email address'].apply(shuffle_email)
 
-print(df['Email address'])
 
 
 
-# Define the truncation function to mask email addresses
+# truncation
 def mask_email(email):
-    username, domain = email.split('@')
-     # maksing the username part to the first 3 characters and add
+    l=[]
+    username, domain = email.split('@') 
     truncated_username = username[:3] + '...'
-    # Combine the masked username and domain parts to form the masked email address
     masked_email = truncated_username + '@' + domain
-    return masked_email
+    l.append(masked_email)
+    return l
 
-df['Email address'] = df['Email address'].apply(mask_email)
 
 
-# Define the padding function to mask email addresses
+# padding
 def pad_email(email):
-    # Define a list of characters to choose
+    p=[]
     chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
-     # Add random characters to the email address
     char=''
     for i in range(5):
-        char += random.choice(chars)
-        #it chooses from the second character and do masking
+        char += random.choice(chars)  
     pad_email = email[:1] + '....' + char+ email[-10:]
-    return pad_email
+    p.append(pad_email)
+    return p
 
 
-#Define the function to mask email addresses
+#obfuscation
 def obfuscate_email(email):
-    # Split email into username and domain
+        o=[]
         username, domain = email.split('@')
         obfuscated_username = ''
         for char in username:
@@ -50,9 +49,8 @@ def obfuscate_email(email):
                 obfuscated_username += str(random.randint(0, 9))
         else:
             obfuscated_username += char
-    # Construct obfuscated email
         obfuscated_email = obfuscated_username + '@' + domain
-        return obfuscated_email
-# Load the input Excel file
-df['Email address'] = df['Email address'].apply(pad_email)
-
+        o.append(obfuscated_email)
+        return o
+df['Email address'] = df['Email address'].apply(obfuscate_email)
+print(df['Email address'])
