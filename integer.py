@@ -4,7 +4,7 @@ import hashlib
 import numpy as np
 
 # Read the Excel file into a DataFrame
-df = pd.read_excel(r'C:\Users\kramal361\Desktop\datamaskingproject\Data-Obfuscation-2\masking-input.xlsx')
+df = pd.read_excel(r'C:\Users\kramal361\Downloads\masking-input (2).xlsx')
 # Define a function to apply the algorithm to each pin code
 import random
 
