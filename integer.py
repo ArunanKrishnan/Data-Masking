@@ -2,33 +2,20 @@ import pandas as pd
 import random
 import hashlib
 import numpy as np
-
-# Read the Excel file into a DataFrame
 df = pd.read_excel(r'C:\Users\kramal361\Downloads\masking-input (2).xlsx')
-# Define a function to apply the algorithm to each pin code
 import random
-
 def multiply_random_middle(number):
-    # Convert the number to a string
+    numbers = [] 
     number_str = str(number)
-    updated_numbers = [] # Create an empty list to store the updated numbers
-    # Check if the number has at least three digits
     if len(number_str) >= 3:
-        # Extract the middle portion of the original number
         middle_portion = number_str[1:-1]
-        # Multiply a random value to the middle portion
-        random_value = random.randint(1, 10)  # Generate a random integer between 1 and 10
+        random_value = random.randint(1, 10)  
         multiplied_middle = int(middle_portion) * random_value
-        # Create the updated number by concatenating the first digit, multiplied middle portion, and last digit
         updated_number = int(number_str[0] + str(multiplied_middle) + number_str[-1])
-        updated_numbers.append(updated_number) # Append the updated number to the list
-    else:
-        # If the number has less than three digits, return an error message
-        return ["Error: Number should have at least three digits"]
-    return updated_numbers
-
-# Apply the function to the 'Pin code' column in the DataFrame
-#df['Updated Number'] = df['Pin code'].apply(multiply_random_middle)
+        numbers.append(updated_number) 
+    return numbers
+df['Pin code'] = df['Pin code'].apply(multiply_random_middle)
+print(df['Pin code'])
 
 # Define a function to apply the algorithm to each pin code
 def extract_first_digit(number):
