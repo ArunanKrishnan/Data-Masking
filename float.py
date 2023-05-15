@@ -6,7 +6,6 @@ import math
 
 data = pd.read_excel(r'C:\\Users\\sethir919\\Desktop\\masking project\\Data-Obfuscation\\data\\masking-input.xlsx')
 
-# Define a function to mask a single name
 def mask_float_by_str(weight): #56.64
     result = []
     for i in range(len(weight)):
@@ -22,6 +21,8 @@ def mask_float_by_str(weight): #56.64
 #data['Weight'] = data['Weight'].apply(mask_float_by_str)
 
 def mask_float_by_precision(lst):
+    print("In function mask_float_by_precision")
+    print(lst)
     masked_lst = []
     factor = 0.1
     for x in lst:
@@ -31,10 +32,13 @@ def mask_float_by_precision(lst):
             masked_lst.append(round(x + mask_value, 2))
         else:
             masked_lst.append(x)
+    print(masked_lst)
     return masked_lst
 
 #data['Weight'] = data['Weight'].apply(mask_float_by_precision)
 def mask_float_by_add(lst):
+    print("In function add")
+    print(lst)
     masked_lst = []
     factor = 0.1
     for x in lst:
@@ -43,6 +47,7 @@ def mask_float_by_add(lst):
             masked_lst.append(round(a, 2))
         else:
             masked_lst.append(x)
+    print(masked_lst)
     return masked_lst
 
 #data['Weight'] = data['Weight'].apply(mask_float_by_add)

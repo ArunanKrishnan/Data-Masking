@@ -1,6 +1,8 @@
 import json
 import float
 import strings
+import varchar_one
+import integer_one
 import pandas as pd
 
 def main():
@@ -34,7 +36,7 @@ def main():
             if 'mask_string_by_knuth_shuffle' in apply_masking:
                 data[col_name] = strings.mask_string_by_knuth_shuffle(data[col_name])
             if 'mask_string_by_durstenfeld_shuffle' in apply_masking:
-                data[col_name] = strings.mask_string_by_durstenfeld_shuffle(data[col_name])
+               data[col_name] = strings.mask_string_by_durstenfeld_shuffle(data[col_name])
             if 'mask_string_by_replacement' in apply_masking:
                 data[col_name] = strings.mask_string_by_replacement(data[col_name])
             if 'mask_strings_by_salt_and_hash' in apply_masking:
@@ -46,8 +48,39 @@ def main():
             if 'mask_string_by_replace_random_chars' in apply_masking:
                 data[col_name] = strings.mask_string_by_replace_random_chars(data[col_name])
             if 'mask_string_by_xor_chars' in apply_masking:
-                data[col_name] = strings.mask_string_by_xor_chars(data[col_name])     
+                data[col_name] = strings.mask_string_by_xor_chars(data[col_name])    
 
+        elif col_type == 'INT':
+            if 'mask_consonants' in apply_masking:
+                data[col_name] = integer_one.mask_consonants(data[col_name])
+            if 'mask_reversal' in apply_masking:
+                data[col_name] = integer_one.mask_reversal(data[col_name])
+            if 'mask_soundex' in apply_masking:
+                data[col_name] = integer_one.mask_soundex(data[col_name])
+            if 'randomized_offset_masking' in apply_masking:
+                data[col_name] = integer_one.randomized_offset_masking(data[col_name])
+                '''
+            if 'extract_first_digit' in apply_masking:
+                data[col_name] = integer_one.extract_first_digit(data[col_name])
+            if 'mask_pincode' in apply_masking:
+                data[col_name] = integer_one.mask_pincode(data[col_name])
+            if 'remind_first_last_swap_between' in apply_masking:
+                data[col_name] = integer_one.remind_first_last_swap_between(data[col_name])
+            if 'complex_mask_pincode' in apply_masking:
+                data[col_name] = integer_one.complex_mask_pincode(data[col_name])
+            if 'mask_integer' in apply_masking:
+                data[col_name] = integer_one.mask_integer(data[col_name])
+                '''
+
+        elif col_type == 'VARCHAR':
+            if 'shuffle_email' in apply_masking:
+                data[col_name] = varchar_one.shuffle_email(data[col_name])
+            if 'mask_email' in apply_masking:
+                data[col_name] = varchar_one.mask_email(data[col_name])
+            if 'pad_email' in apply_masking:
+                data[col_name] = varchar_one.pad_email(data[col_name])
+            if 'obfuscate_email' in apply_masking:
+                data[col_name] = varchar_one.obfuscate_email(data[col_name])
 
     #Save the masked Excel file
     data.to_excel('output.xlsx', index=False)
