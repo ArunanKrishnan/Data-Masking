@@ -1,0 +1,123 @@
+[
+    {
+        "name": "Employee ID",
+        "type": "INT",
+        "mode": "REQUIRED",
+        "col_type": {
+          "ApplyMasking": ["mask_consonants"]
+        } 
+    },
+    {
+        "name": "Name",
+        "type": "STRING",
+        "mode": "REQUIRED",
+        "col_type": {
+          "ApplyMasking": ["mask_string_by_knuth_shuffle"]
+        } 
+    },
+    {
+    "name": "User ID",
+    "type": "VARCHAR",
+    "mode": "REQUIRED",
+    "col_type": {
+      "ApplyMasking": ["shuffle_string"]
+    } 
+    },
+    {
+    "name": "Age",
+    "type": "INT",
+    "mode": "REQUIRED",
+    "col_type": {
+      "ApplyMasking": ["mask_reversal"]
+    } 
+    },
+    {
+        "name": "Phone Number",
+        "type": "INT",
+        "mode": "REQUIRED",
+        "col_type": {
+          "ApplyMasking": ["mask_soundex"]
+        } 
+    },
+    {
+        "name": "Driver License Number",
+        "type": "VARCHAR",
+        "mode": "REQUIRED",
+        "col_type": {
+          "ApplyMasking": ["truncate_string"]
+        } 
+      },
+      {
+        "name": "Passport Number",
+        "type": "VARCHAR",
+        "mode": "REQUIRED",
+        "col_type": {
+          "ApplyMasking": ["swap_pairs"]
+        } 
+      },
+      {
+        "name": "Bank Account Number",
+        "type": "INT",
+        "mode": "REQUIRED",
+        "col_type": {
+          "ApplyMasking": ["extract_first_digit"]
+        } 
+    },
+    {
+      "name": "Email address",
+      "type": "EMAIL",
+      "mode": "REQUIRED",
+      "col_type": {
+        "ApplyMasking": ["obfuscate_email"]
+      } 
+  },
+  {
+    "name": "Weight",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "col_type": {
+      "ApplyMasking": ["mask_float_by_precision"]
+    } 
+},
+{
+  "name": "door no",
+  "type": "VARCHAR",
+  "mode": "REQUIRED",
+  "col_type": {
+    "ApplyMasking": ["random_replace_and_shuffle"]
+  } 
+},
+{
+  "name": "Street name",
+  "type": "STRING",
+  "mode": "REQUIRED",
+  "col_type": {
+    "ApplyMasking": ["mask_string_by_replacement"]
+  } 
+},
+{
+  "name": "Pin code",
+  "type": "INT",
+  "mode": "REQUIRED",
+  "col_type": {
+    "ApplyMasking": ["complex_mask_pincode"]
+  } 
+},
+{
+  "name": "Time Stamp",
+  "type": "TIMESTAMP",
+  "mode": "REQUIRED",
+  "col_type": {
+    "ApplyMasking": ["shift_hours"]
+  } 
+},
+{
+  "name": "GPS",
+  "type": "FLOAT",
+  "mode": "REQUIRED",
+  "col_type": {
+    "ApplyMasking": ["mask_float_by_add"]
+  } 
+}
+  
+]
