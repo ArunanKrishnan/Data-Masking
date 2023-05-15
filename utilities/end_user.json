@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [
     {
         "name": "Weight",
@@ -15,4 +16,44 @@
           "ApplyMasking": ["mask_string_by_knuth_shuffle"]
         } 
       }
+=======
+<<<<<<<< HEAD:end_user.json
+[
+ 
+  {
+    "name": "Name",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "col_type": {
+      "ApplyMasking": ["mask_string_by_knuth_shuffle"]
+    } 
+  },
+  {
+    "name": "Weight",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "col_type": {
+      "ApplyMasking": ["mask_float_by_add"]
+    } 
+  }
+========
+[
+    {
+        "name": "Weight",
+        "type": "FLOAT",
+        "mode": "REQUIRED",
+        "col_type": {
+          "ApplyMasking": ["mask_float_by_rotate"]
+        } 
+      },
+      {
+        "name": "Name",
+        "type": "STRING",
+        "mode": "REQUIRED",
+        "col_type": {
+          "ApplyMasking": ["mask_strings_by_salt_and_hash"]
+        } 
+      }
+>>>>>>>> ab5d02e6ac07773d858363b193fb5b1949d27c2a:utilities/end_user.json
+>>>>>>> ab5d02e6ac07773d858363b193fb5b1949d27c2a
 ]
