@@ -28,6 +28,9 @@ def bucket_date(date):
     masked.append(mask)
     return masked
 
+def shift_hours(timestamp, hours=3):
+    shifted_time = pd.to_datetime(timestamp) + timedelta(hours=hours)
+    return shifted_time
 
 # Apply the substitution function to the date column
 #df['Time Stamp'] = df['Time Stamp'].apply(drop_column)
