@@ -2,17 +2,16 @@ import pandas as pd
 import numpy as np
 import random
 import soundex
-df = pd.read_excel(r'C:\\Users\\sethir919\\Desktop\\masking project\\Data-Obfuscation\\data\\masking-input.xlsx')
+df = pd.read_excel(r"C:\\Users\\sethir919\\Desktop\\masking project\\Data-Obfuscation\\data\\masking-input.xlsx")
 
 # Define function to mask all digits in the phone number columndef mask_consonants(phone_number):
 def mask_consonants(phone_number):
-    mask_numbers = []
     masked_number = ''.join(['X' if c.isdigit() else c for c in str(phone_number)])
-    mask_numbers.append(masked_number)
-    return mask_numbers
-
+    return masked_number
+    
+#df['Employee ID'] = df['Employee ID'].apply(mask_consonants)
+#print(df['Employee ID'])
 def mask_reversal(phone_number):
-    mask = []
     # Reverse the phone number
     reversed_number = str(phone_number)[::-1]
     # Determine the number of digits to mask
@@ -21,9 +20,11 @@ def mask_reversal(phone_number):
     masked_positions = random.sample(range(len(reversed_number)), num_masked_digits)
     # Mask the digits at the chosen positions with X's or *'s
     masked_number = ''.join(['X' if i in masked_positions else digit for i, digit in enumerate(reversed_number)])
-    mask.append(masked_number[::-1])
+    return masked_number[::-1]
     # Reverse the masked number and return it
-    return mask
+  
+
+
 
 def mask_soundex(phone_number):
     masking = []

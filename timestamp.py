@@ -13,7 +13,7 @@ def substitute_date(date):
     mask.append(random_date)
     return mask
 # Define the fuzzing function
-def fuzz_date(date):
+def radin_date(date):
     mask = []
     fuzz = timedelta(days=random.randint(-3,3))
     var = date + fuzz
@@ -21,7 +21,7 @@ def fuzz_date(date):
     return mask
 
 # Define the bucketing function
-def bucket_date(date):
+def add_date(date):
     masked = []
     year = date.year
     mask = datetime(year=year, month=1, day=1)
@@ -30,8 +30,8 @@ def bucket_date(date):
 
 def shift_hours(timestamp, hours=3):
     shifted_time = pd.to_datetime(timestamp) + timedelta(hours=hours)
-    return shifted_time
+    return [shifted_time]
 
 # Apply the substitution function to the date column
-#df['Time Stamp'] = df['Time Stamp'].apply(drop_column)
+#df['Time Stamp'] = df['Time Stamp'].apply(add_date)
 #print(df['Time Stamp'])
