@@ -54,8 +54,8 @@ def main():
                 df[col_name] = strings.mask_string_by_xor_chars(df[col_name])    
 
         elif col_type == 'INT':
-            if 'mask_consonants' in apply_masking:
-                df[col_name] = integer.mask_consonants(df[col_name])
+            if 'xor_with_random_and' in apply_masking:
+                df[col_name] = integer.xor_with_random_and(df[col_name])
             if 'mask_reversal' in apply_masking:
                 df[col_name] = integer.mask_reversal(df[col_name])
             if 'mask_soundex' in apply_masking:
@@ -95,9 +95,9 @@ def main():
         elif col_type == 'TIMESTAMP':
             if 'substitute_date' in apply_masking:
                 df[col_name] = timestamp.substitute_date(df[col_name])
-            if 'fuzz_date' in apply_masking:
+            if 'radin_date' in apply_masking:
                 df[col_name] = timestamp.radin_date(df[col_name])
-            if 'bucket_date' in apply_masking:
+            if 'add_date' in apply_masking:
                 df[col_name] = timestamp.add_date(df[col_name])
             if 'shift_hours' in apply_masking:
                 df[col_name] = timestamp.shift_hours(df[col_name])

@@ -1,11 +1,11 @@
 
 [
   {
-  "name": "User ID",
-  "type": "VARCHAR",
+  "name": "Employee ID",
+  "type": "INT",
   "mode": "REQUIRED",
   "col_type": {
-    "ApplyMasking": ["shuffle_string"]
+    "ApplyMasking": ["mask_consonants"]
   } 
   }
 ]

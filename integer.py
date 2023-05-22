@@ -1,13 +1,26 @@
 import pandas as pd
 import numpy as np
 import random
+import math
 import soundex
-df = pd.read_excel(r"C:\\Users\\sethir919\\Desktop\\masking project\\Data-Obfuscation\\data\\masking-input.xlsx")
+df=pd.read_excel(r"C:\\Users\\sethir919\\Desktop\\masking project\\Data-Obfuscation\\data\\masking-input.xlsx")
+
 
 # Define function to mask all digits in the phone number columndef mask_consonants(phone_number):
 def mask_consonants(phone_number):
-    masked_number = ''.join(['X' if c.isdigit() else c for c in str(phone_number)])
+    if not isinstance(phone_number, str):
+        phone_number = str(phone_number)
+    
+    masked_number = ''
+    for c in phone_number:
+        if c.isalpha() and c.lower() not in 'aeiou':
+            masked_number += 'X'
+        else:
+            masked_number += c
+    
     return masked_number
+
+    
     
 #df['Employee ID'] = df['Employee ID'].apply(mask_consonants)
 #print(df['Employee ID'])
@@ -23,11 +36,7 @@ def mask_reversal(phone_number):
     return masked_number[::-1]
     # Reverse the masked number and return it
   
-
-
-
 def mask_soundex(phone_number):
-    masking = []
     soundex_codes = {
         '0': 'Z',
         '1': 'S',
@@ -40,13 +49,10 @@ def mask_soundex(phone_number):
         '8': 'A',
         '9': 'N'
     }
-    soundex_number = ''
-    for digit in str(phone_number):
-        if digit.isdigit():
-            soundex_number += soundex_codes[digit]
+    soundex_number = ''.join(soundex_codes.get(digit, '') for digit in str(phone_number) if digit.isdigit())
     masked_soundex = soundex_number[:3] + 'X' * (len(soundex_number) - 3)
-    masking.append(masked_soundex)
-    return masking
+    return masked_soundex
+
 
 # Define function to apply randomized offset masking to a phone number
 def randomized_offset_masking(phone_numbers):
@@ -95,7 +101,7 @@ def extract_first_digit(number):
         extracted_digit.append(extracted_digits)
         # Return the list
         return extracted_digit
-'''
+
 def mask_pincode(pincode):
     # Convert the pincode to a string
     pincode_str = str(pincode)
@@ -105,7 +111,7 @@ def mask_pincode(pincode):
         masked_char = chr(ord(char) ^ 255)
         masked_chars.append(masked_char)
     return masked_chars
-'''
+
 # Define a function to apply the algorithm to each pin code
 def remind_first_last_swap_between(number):
     # Convert the number to a string
@@ -149,3 +155,144 @@ def complex_mask_pincode(pincode):
         return masked_pincodes
 
 
+'''
+def xor_with_random_and(input_file):
+    # Load the Excel file into a DataFrame
+    df = pd.read_excel(input_file)
+
+    # Initialize an empty list to store the XOR results
+    xor_results = []
+
+    # Iterate over the integers in the DataFrame
+    for number in df['Employee ID']:
+        # Generate a random value and perform a bitwise AND operation with the number
+        random_value = random.randint(1, 1000)
+        and_result = number & random_value
+
+        # Perform the XOR operation with the AND result
+        xor_result = number ^ and_result
+
+        # Add the XOR result to the list
+        xor_results.append(xor_result)
+
+    # Return the list of XOR results
+    return xor_results
+df['Employee ID'] = df['Employee ID'].apply(xor_with_random_and)
+print(df['Employee ID'])
+
+def mask_employee_ids(input_file):
+    # Load the Excel file into a DataFrame
+    df = pd.read_excel(input_file)
+
+    # Generate a random power of 2
+    power_of_two = 2 ** random.randint(1, 10)
+
+    # Apply the mask to the specified column
+    df['Employee ID'] = df['Employee ID'].apply(lambda x: x + power_of_two)
+
+    # Return the masked list of employee IDs as a Python list
+    return df['Employee ID'].tolist()
+
+def modify_list_values(file_path, column_name):
+    # Read the Excel file
+    df = pd.read_excel(file_path)
+
+    # Extract the values from the specified column as a list
+    input_list = df[column_name].tolist()
+
+    # Modify the list
+    result_list = []
+    for value in input_list:
+        multiplied_digits = []
+        for digit in str(value):
+            multiplied_digits.append(str(int(digit) * 2))
+
+        final_digits = []
+        for i, digit in enumerate(multiplied_digits):
+            if int(digit) % 2 == 0:
+                final_digits.append(str(int(digit) + 1))
+            else:
+                final_digits.append(str(int(digit) - 1))
+
+        final_value = int("".join(final_digits))
+        result_list.append(final_value)
+
+    # Return the modified list
+    return result_list
+
+def add_fixed_value(file_path, column_name, fixed_value):
+    # Read the Excel file
+    df = pd.read_excel(file_path)
+
+    # Add the fixed value to the specified column
+    df[f'Updated {column_name}'] = df[column_name] + fixed_value
+
+    # Return the updated DataFrame
+    return df
+
+def divide_and_swap_column(file_path, column_name):
+    # Read the Excel file
+    df = pd.read_excel(file_path)
+
+    # Divide the column into two halves and swap them
+    numbers = df[column_name].tolist()
+    length = len(numbers)
+    if length % 2 == 0:
+        half = length // 2
+        first_half = numbers[:half]
+        second_half = numbers[half:]
+        swapped_numbers = second_half + first_half
+
+        # Add the swapped column to the DataFrame
+        df[f'Swapped {column_name}'] = swapped_numbers
+
+        # Return the updated DataFrame
+        return df
+    else:
+        print("Error: List length must be even")
+
+def multiply_and_subtract(file_path, column_name):
+    # Read the Excel file
+    df = pd.read_excel(file_path)
+
+    column_values = df[column_name]
+    result_values = []
+    for value in column_values:
+        random_number = random.uniform(0, 1)
+        result = round(value - (value * random_number))
+        result_values.append(result)
+
+    # Add the modified column to the DataFrame
+    df[f'Multiplied and Subtracted {column_name}'] = pd.Series(result_values)
+
+    # Return the output list
+    return df[f'Multiplied and Subtracted {column_name}'].tolist()
+
+
+def shuffle_column_numbers(column_values):
+    rounded_numbers = [math.ceil(num) for num in column_values]
+    indexes = list(range(len(column_values)))
+    random.shuffle(indexes)
+    shuffled_numbers = [rounded_numbers[index] for index in indexes]
+    return shuffled_numbers
+def shuffle_digits(file_path, column_name):
+    df = pd.read_excel(file_path)
+    column_values = df[column_name]
+    result_values = []
+    for value in column_values:
+        digits_list = [int(digit) for digit in str(value)]
+        random.shuffle(digits_list)
+        result_value = int("".join(map(str, digits_list)))
+        result_values.append(result_value)
+    df[f'Shuffled Digits {column_name}'] = pd.Series(result_values)
+    return result_values
+def sub_fixed_value(file_path, column_name, fixed_value):
+    # Read the Excel file
+    df = pd.read_excel(file_path)
+
+    # Add the fixed value to the specified column
+    df[f'Updated {column_name}'] = df[column_name] - fixed_value
+
+    # Return the updated DataFrame
+    return df
+'''
