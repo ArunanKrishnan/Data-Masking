@@ -1,0 +1,11 @@
+
+[
+  {
+  "name": "Employee ID",
+  "type": "INT",
+  "mode": "REQUIRED",
+  "col_type": {
+    "ApplyMasking": ["mask_consonants"]
+  } 
+  }
+]

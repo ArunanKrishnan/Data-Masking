@@ -1,94 +1,118 @@
 import pandas as pd
+import numpy as np
+import string
 import random
-#import input data
-df = pd.read_excel(r'C:\Users\kramal361\Desktop\datamaskingproject\Data-Obfuscation-2\masking-input.xlsx')
-def shuffle_email(email):
-    email_parts = email.split('@')
-    username = email_parts[0]
-    domain = email_parts[1]
-    shuffled_username = ''.join(random.sample(username, len(username)))
-    shuffled_email = shuffled_username + '@' + domain
-    return shuffled_email
-df['Email address'] = df['Email address'].apply(shuffle_email)
-print(df)
-print(df['Email address'])
-df.to_excel('output_shuffling.xlsx', index=False)
+
+df = pd.read_excel(r'C:\\Users\\sethir919\\Desktop\\masking project\\Data-Obfuscation\\data\\masking-input.xlsx')
+
+def shuffle_string(s):
+    """
+    Shuffles the characters in a string randomly to create a new string with the same length.
+
+    Args:
+        s (str or pd.Series): The string or series of strings to shuffle.
+
+    Returns:
+        pd.Series: The shuffled strings.
+    """
+    if isinstance(s, str):
+        # If s is a single string, convert it to a list of characters
+        lst = list(s)
+        # Shuffle the list randomly
+        random.shuffle(lst)
+        # Convert the shuffled list back to a string
+        return ''.join(lst)
+    elif isinstance(s, pd.Series):
+        # If s is a series, apply the shuffling operation to each element
+        return s.apply(lambda x: shuffle_string(x))
+    else:
+        raise ValueError("Input should be either a string or a pd.Series.")
 
 
-# Define the truncation function to mask email addresses
-def mask_email(email):
-    username, domain = email.split('@')
-     # maksing the username part to the first 3 characters and add
-    truncated_username = username[:3] + '...'
-    # Combine the masked username and domain parts to form the masked email address
-    masked_email = truncated_username + '@' + domain
-    return masked_email
-#load the excel file as input
-df = pd.read_excel(r'C:\Users\kramal361\Desktop\datamaskingproject\Data-Obfuscation\masking-input.xlsx')
-df['Email address'] = df['Email address'].apply(mask_email)
-print(df)
-print(df['Email address'])
-#load the output in excel file
-df.to_excel('outputfle_truncate.xlsx', index=False)
+# df['User ID'] = df['User ID'].apply(shuffle_string)
+# print(df['User ID'])
+def random_replace_and_shuffle(s, p=0.5):
+    """
+    Randomly replaces some characters in the string with other random characters,
+    and then shuffles the resulting string.
+
+    Args:
+        s (str or pd.Series): The input string or series of strings to mask.
+        p (float): The probability of replacing each character.
+
+    Returns:
+        str or pd.Series: The masked string or series of masked strings.
+    """
+    if isinstance(s, str):
+        # If s is a single string, convert it to a list of characters
+        chars = list(s)
+        # Iterate over the characters and randomly replace some of them
+        for i in range(len(chars)):
+            if random.random() < p:
+                chars[i] = random.choice(string.printable)
+        # Convert the list of characters back to a string and shuffle it
+        masked = ''.join(chars)
+        masked = ''.join(random.sample(masked, len(masked)))
+        return masked
+    elif isinstance(s, pd.Series):
+        # If s is a series, apply the masking operation to each element
+        return s.apply(lambda x: random_replace_and_shuffle(x, p))
+    else:
+        raise ValueError("Input should be either a string or a pd.Series.")
 
 
-# Define the padding function to mask email addresses
-def pad_email(email):
-    # Define a list of characters to choose
-    chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
-     # Add random characters to the email address
-    char=''
-    for i in range(5):
-        char += random.choice(chars)
-        #it chooses from the second character and do masking
-    pad_email = email[:1] + '....' + char+ email[-10:]
-    return pad_email
-import pandas as pd
-import random
-#load the excel file as the input
-df = pd.read_excel(r'C:\Users\kramal361\Desktop\datamaskingproject\Data-Obfuscation-2\masking-input.xlsx')
-if 'Email address' in df.columns:
-    df['Email address'] = df['Email address'].apply(pad_email)
-    print(df['Email address'])
-    #load the masked output in the ouput excel file
-    df.to_excel('outputfile_padding.xlsx', index=False)
+
+def swap_pairs(s, swap_prob=0.5):
+    """
+    Randomly swap pairs of adjacent characters in a string or series of strings.
+
+    Parameters:
+        s (str or pd.Series): The string or series of strings to be modified.
+        swap_prob (float): The probability of swapping each pair of adjacent characters. Default is 0.5.
+
+    Returns:
+        str or pd.Series: The modified string or series of modified strings with pairs of adjacent characters swapped randomly.
+    """
+    if isinstance(s, str):
+        # If s is a single string, convert it to a list of characters
+        chars = list(s)
+        # Iterate over the characters and randomly swap adjacent pairs
+        for i in range(0, len(chars) - 1, 2):
+            if np.random.binomial(1, swap_prob) == 1:
+                chars[i], chars[i + 1] = chars[i + 1], chars[i]
+        return ''.join(chars)
+    elif isinstance(s, pd.Series):
+        # If s is a series, apply the swapping operation to each element
+        return s.apply(lambda x: swap_pairs(x, swap_prob))
+    else:
+        raise ValueError("Input should be either a string or a pd.Series.")
 
 
-#Define the function to mask email addresses
-def obfuscate_email(email):
-    # Split email into username and domain
-    username, domain = email.split('@')
-    obfuscated_username = ''
-    for char in username:
-        if char.lower() in ['a', 'e', 'i', 'o', 'u','b','c','d']:
-            obfuscated_username += str(random.randint(0, 9))
+
+def truncate_string(s, truncate_prob=0.5):
+    """
+    Truncates a random portion of the string from the beginning, end, or middle.
+
+    Parameters:
+        s (str or pd.Series): The string or series of strings to be modified.
+        truncate_prob (float): Probability of truncating the string.
+
+    Returns:
+        str or pd.Series: The modified string or series of modified strings with a random portion truncated.
+    """
+    if isinstance(s, str):
+        # If s is a single string, perform the truncation operation
+        if random.random() < truncate_prob:
+            n = len(s)
+            start_idx = random.randint(0, n - 1)
+            end_idx = random.randint(start_idx, n - 1)
+            return s[:start_idx] + s[end_idx + 1:]
         else:
-            obfuscated_username += char
-    # Construct obfuscated email
-    obfuscated_email = obfuscated_username + '@' + domain
-    return obfuscated_email
-# Load the input Excel file
-df = pd.read_excel(r'C:\Users\kramal361\Desktop\datamaskingproject\Data-Obfuscation-2\masking-input.xlsx')
-df['Email address'] = df['Email address'].apply(obfuscate_email)
-print(df)
-print(df['Email address'])
-#load masked data into output excel file
-df.to_excel('outputfles_obfus.xlsx', index=False)
-
-
-
-# Define the cryptography function to mask email addresses
-from cryptography.fernet import Fernet
-key = Fernet.generate_key()
-fernet = Fernet(key)
-def encrypt_email(email):
-    encrypted_email = fernet.encrypt(email.encode())
-    return encrypted_email
-#load the excel file as a input
-df = pd.read_excel(r'C:\Users\kramal361\DownloadsC:\Users\kramal361\Desktop\datamaskingproject\Data-Obfuscation-2\maskinginput.xlsx')
-df['Email address'] = df['Email address'].apply(encrypt_email)
-#load the masked data in the output excel file 
-df.to_excel('encrypted_emails.xlsx', index=False)
-print('Original Email Addresses:')
-print(df['Email address'])
-print('\nEncrypted Email Addresses:')
+            return s
+    elif isinstance(s, pd.Series):
+        # If s is a series, apply the truncation operation to each element
+        return s.apply(lambda x: truncate_string(x, truncate_prob))
+    else:
+        raise ValueError("Input should be either a string or a pd.Series.")
+#df['User ID'] = df['User ID'].apply(truncate_string)
+#print(df['User ID'])
