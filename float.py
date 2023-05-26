@@ -18,8 +18,8 @@ def mask_float_by_str(weight): #56.64
         result.append(x)
     return result
 
-#data['Weight'] = data['Weight'].apply(mask_float_by_str)
-
+# data['Weight'] = data['Weight'].apply(mask_float_by_str)
+# print(data['Weight'])
 def mask_float_by_precision(lst):
     print("In function mask_float_by_precision")
     print(lst)
@@ -37,8 +37,6 @@ def mask_float_by_precision(lst):
 
 #data['Weight'] = data['Weight'].apply(mask_float_by_precision)
 def mask_float_by_add(lst):
-    print("In function add")
-    print(lst)
     masked_lst = []
     factor = 0.1
     for x in lst:
@@ -47,22 +45,19 @@ def mask_float_by_add(lst):
             masked_lst.append(round(a, 2))
         else:
             masked_lst.append(x)
-    print(masked_lst)
     return masked_lst
 
 #data['Weight'] = data['Weight'].apply(mask_float_by_add)
 
-def mask_float_by_rotate(lst):
-    masked_lst = []
-    for x in lst:
-        if isinstance(x, float):
-            bits = bin(struct.unpack('!I', struct.pack('!f', float(x)))[0])[2:].rjust(32, '0')
-            rotated_bits = bits[-1] + bits[:-1]
-            masked_float = struct.unpack('!f', struct.pack('!I', int(rotated_bits, 2)))[0]
-            masked_lst.append(round(masked_float, 2))
-        else:
-            masked_lst.append(x)
-    return masked_lst
 
-#data['Weight'] = data['Weight'].apply(mask_float_by_rotate)
+def mask_float_by_rotate(x):
+    bin_size = 2.56
+    if isinstance(x, (float, int)):
+        bin_midpoint = bin_size * (np.round(x / bin_size) + 0.5)
+        return round(bin_midpoint, 2)
+    else:
+        return x.apply(lambda val: round(bin_size * (np.round(val / bin_size) + 0.5), 2))
 
+
+data['Weight'] = data['Weight'].apply(mask_float_by_rotate)
+#print(data['Weight'])

@@ -1,11 +1,10 @@
-
 [
   {
       "name": "Employee ID",
       "type": "INT",
       "mode": "REQUIRED",
       "col_type": {
-        "ApplyMasking": ["mask_reversal"]
+        "ApplyMasking": ["sub_fixed_value"]
       } 
   },
   {
@@ -29,15 +28,23 @@
   "type": "INT",
   "mode": "REQUIRED",
   "col_type": {
-    "ApplyMasking": ["mask_reversal"]
+    "ApplyMasking": ["sub_fixed_value"]
   } 
+  },
+  {
+    "name": "Gender",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "col_type": {
+      "ApplyMasking": ["samp"]
+    } 
   },
   {
       "name": "Phone Number",
       "type": "INT",
       "mode": "REQUIRED",
       "col_type": {
-        "ApplyMasking": ["mask_soundex"]
+        "ApplyMasking": ["sub_fixed_value"]
       } 
   },
   {
@@ -45,7 +52,7 @@
       "type": "VARCHAR",
       "mode": "REQUIRED",
       "col_type": {
-        "ApplyMasking": ["truncate_string"]
+        "ApplyMasking": ["shuffle_string"]
       } 
     },
     {
@@ -53,7 +60,7 @@
       "type": "VARCHAR",
       "mode": "REQUIRED",
       "col_type": {
-        "ApplyMasking": ["swap_pairs"]
+        "ApplyMasking": ["shuffle_string"]
       } 
     },
     {
@@ -61,7 +68,7 @@
       "type": "INT",
       "mode": "REQUIRED",
       "col_type": {
-        "ApplyMasking": ["extract_first_digit"]
+        "ApplyMasking": ["sub_fixed_value"]
       } 
   },
   {
@@ -69,7 +76,7 @@
     "type": "EMAIL",
     "mode": "REQUIRED",
     "col_type": {
-      "ApplyMasking": ["obfuscate_email"]
+      "ApplyMasking": ["shuffle_email"]
     } 
 },
 {
@@ -85,7 +92,7 @@
 "type": "VARCHAR",
 "mode": "REQUIRED",
 "col_type": {
-  "ApplyMasking": ["random_replace_and_shuffle"]
+  "ApplyMasking": ["shuffle_string"]
 } 
 },
 {
@@ -93,7 +100,7 @@
 "type": "STRING",
 "mode": "REQUIRED",
 "col_type": {
-  "ApplyMasking": ["mask_string_by_replacement"]
+  "ApplyMasking": ["mask_string_by_knuth_shuffle"]
 } 
 },
 {
@@ -101,7 +108,7 @@
 "type": "INT",
 "mode": "REQUIRED",
 "col_type": {
-  "ApplyMasking": ["complex_mask_pincode"]
+  "ApplyMasking": ["sub_fixed_value"]
 } 
 },
 {
@@ -109,15 +116,7 @@
 "type": "TIMESTAMP",
 "mode": "REQUIRED",
 "col_type": {
-  "ApplyMasking": ["shift_hours"]
-} 
-},
-{
-"name": "GPS",
-"type": "FLOAT",
-"mode": "REQUIRED",
-"col_type": {
-  "ApplyMasking": ["mask_float_by_add"]
+  "ApplyMasking": ["substitute_date"]
 } 
 }
 

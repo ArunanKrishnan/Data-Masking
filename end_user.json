@@ -1,11 +1,11 @@
 
 [
   {
-  "name": "Gender",
-  "type": "STRING",
+  "name": "Weight",
+  "type": "FLOAT",
   "mode": "REQUIRED",
   "col_type": {
-    "ApplyMasking": ["samp"]
+    "ApplyMasking": ["mask_float_by_add"]
   } 
   }
 ]
