@@ -1,0 +1,19 @@
+import pandas as pd
+from datetime import date
+
+def round_to_nearest_decade(date_of_birth):
+    current_year = date.today().year
+    birth_year = date_of_birth.year
+    rounded_year = round((birth_year - current_year) / 10) * 10 + current_year
+    return rounded_year
+
+# Read the Excel file
+df = pd.read_excel(r'C:\Users\kramal361\Downloads\masking-input (2).xlsx')
+
+# Perform age-based rounding on the date of birth column
+df['Rounded Date of Birth'] = df['Date of Birth'].apply(round_to_nearest_decade)
+
+# Save the updated DataFrame to a new Excel file
+df.to_excel('rounded_dates.xlsx', index=False)
+print(df['Rounded Date of Birth'])
+

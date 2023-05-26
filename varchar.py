@@ -52,5 +52,5 @@ def obfuscate_email(email):
         obfuscated_email = obfuscated_username + '@' + domain
         o.append(obfuscated_email)
         return o
-df['Email address'] = df['Email address'].apply(obfuscate_email)
+df['Email address'] = df['Email address'].apply(pad_email)
 print(df['Email address'])
