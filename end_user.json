@@ -1,11 +1,11 @@
 
 [
   {
-  "name": "Employee ID",
-  "type": "INT",
+  "name": "Gender",
+  "type": "STRING",
   "mode": "REQUIRED",
   "col_type": {
-    "ApplyMasking": ["mask_consonants"]
+    "ApplyMasking": ["samp"]
   } 
   }
 ]

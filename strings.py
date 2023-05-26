@@ -115,19 +115,11 @@ def mask_string_by_xor_chars(plaintext):
 # Apply the Bitwise XOR algorithm to the 'Name' column
 data['Name'] = data['Name'].apply(lambda x: mask_string_by_xor_chars(x) if isinstance(x, str) else x)
 
-def star(Gender):
+import numpy as np
 
-  if Gender=="M":
+def samp(Gender):
+    return np.where(Gender.eq("M"), "F", np.where(Gender.eq("F"), "O", "M"))
 
-    return "F"
-
-  elif Gender=="F":
-
-    return "O"
-
-  elif Gender=="O":
-
-    return "M"
 
 
 

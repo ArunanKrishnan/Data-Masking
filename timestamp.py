@@ -2,6 +2,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 from datetime import datetime
 import random
+import numpy as np
 
 df = pd.read_excel(r'C:\\Users\\sethir919\\Desktop\\masking project\\Data-Obfuscation\\data\\masking-input.xlsx')
 
@@ -29,10 +30,11 @@ def substitute_date(date):
         raise ValueError("Input should be a pd.Timestamp, datetime.datetime, or str object.")
 
     random_date = start_date + timedelta(seconds=random.randint(0, int((end_date - start_date).total_seconds())))
-    return pd.Timestamp(random_date)
+    timestamp = pd.Timestamp(random_date, unit='D')
+    formatted_timestamp = timestamp.strftime('%Y-%m-%d %H:%M:%S')
+    return formatted_timestamp
 
-# Define the fuzzing function
-def random_date(date):
+def radin_date(date):
     """
     Adds a random offset of up to 3 days to the given date.
 
@@ -40,20 +42,24 @@ def random_date(date):
         date (pd.Timestamp, datetime.datetime, or str): The date to be masked.
 
     Returns:
-        pd.Timestamp or pd.Series: The masked date with a random offset of up to 3 days.
+        str or pd.Series: The masked date with a random offset of up to 3 days.
     """
     if isinstance(date, pd.Timestamp):
         date = date.to_pydatetime()
     elif isinstance(date, str):
         date = pd.to_datetime(date).to_pydatetime()
     elif isinstance(date, pd.Series):
-        return date.apply(random_date)
+        return date.apply(radin_date)
     elif not isinstance(date, datetime):
         raise ValueError("Input should be a pd.Timestamp, datetime.datetime, or str object.")
 
     fuzz = timedelta(days=random.randint(-3, 3))
     var = date + fuzz
-    return pd.Timestamp(var)
+    formatted_timestamp = var.strftime('%Y-%m-%d %H:%M:%S')
+    return formatted_timestamp
+# df['Time Stamp'] = df['Time Stamp'].apply(random_date)
+# print(df['Time Stamp'])
+
 
 def add_date(date):
     """
@@ -76,27 +82,42 @@ def add_date(date):
 
     year = date.year
     mask = datetime(year=year, month=1, day=1)
-    return pd.Timestamp(mask)
+    timestamp = pd.Timestamp(mask, unit='D')
+    formatted_timestamp = timestamp.strftime('%Y-%m-%d %H:%M:%S')
+    return formatted_timestamp
 
 
 def shift_hours(timestamp, hours=3):
-    """
-    Shifts the timestamp by the specified number of hours.
-
-    Parameters:
-        timestamp (str or pd.Timestamp): The timestamp to be shifted.
-        hours (int): The number of hours to shift the timestamp by. Default is 3.
-
-    Returns:
-        pd.Timestamp: The shifted timestamp.
-    """
     if isinstance(timestamp, str):
-        # If timestamp is a string, convert it to a pd.Timestamp object
         timestamp = pd.to_datetime(timestamp)
-    shifted_time = timestamp + timedelta(hours=hours)
-    return shifted_time
+    elif isinstance(timestamp, pd.Series):
+        return timestamp.apply(lambda x: shift_hours(x, hours=3))
+    
+    shifted_timestamp = timestamp + pd.DateOffset(hours=3)
+    formatted_timestamp = shifted_timestamp.strftime('%Y-%m-%d %H:%M:%S')
+    return formatted_timestamp
 
 
-# Apply the substitution function to the date column
-#df['Time Stamp'] = df['Time Stamp'].apply(substitute_date)
-#print(df['Time Stamp'])
+def random_shift(df):
+    if isinstance(df, pd.Series):
+        return df.apply(random_shift)
+    elif isinstance(df, pd.DataFrame):
+        df = df.apply(pd.to_datetime, errors='ignore')
+        mask = ~df.isnull()
+        random_shifts = np.random.randint(-30, 31, size=df.shape)
+        df_shifted = df + pd.to_timedelta(random_shifts, unit='D') * mask
+        df_shifted = df_shifted.applymap(lambda x: x.strftime('%Y-%m-%d %H:%M:%S') if pd.notnull(x) else None)
+        return df_shifted
+    else:
+        return df
+
+
+def interval_mask(df):
+    if isinstance(df, pd.Series):
+        return df.apply(interval_mask)
+    elif isinstance(df, pd.DataFrame):
+        mask = df['Time Stamp'] > pd.Timestamp('2022-01-01')
+        df.loc[mask, 'Time Stamp'] = df.loc[mask, 'Time Stamp'].apply(lambda x: x.strftime('%Y-%m-%d %H:%M:%S'))
+        return df
+    else:
+        return df
