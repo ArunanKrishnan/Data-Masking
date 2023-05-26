@@ -41,8 +41,8 @@ def main():
                 df[col_name] = strings.mask_string_by_knuth_shuffle(df[col_name])
             if 'mask_string_by_durstenfeld_shuffle' in apply_masking:
                df[col_name] = strings.mask_string_by_durstenfeld_shuffle(df[col_name])
-            if 'mask_string_by_replacement' in apply_masking:
-                df[col_name] = strings.mask_string_by_replacement(df[col_name])
+            if 'shuffle_names' in apply_masking:
+                df[col_name] = strings.shuffle_names(df[col_name])
             if 'mask_strings_by_salt_and_hash' in apply_masking:
                 df[col_name] = strings.mask_strings_by_salt_and_hash(df[col_name])
             if 'mask_strings_by_reverse_string' in apply_masking:

@@ -2,6 +2,8 @@ import pandas as pd
 import hashlib
 import os
 import random
+import numpy as np
+from phonetics import soundex
 
 data=pd.read_excel(r'C:\\Users\\sethir919\\Desktop\\masking project\\Data-Obfuscation\\data\\masking-input.xlsx')
 
@@ -48,18 +50,6 @@ def mask_string_by_durstenfeld_shuffle(lst):
             masked_lst.append(s)
     return masked_lst
 
-# Replace the original string column with the shuffled list
-#data['Name']=data['Name'] = shuffled_column.apply(lambda x: ''.join(x))
-replacement_names = ['John Doe', 'Jane Doe', 'Bob Smith', 'Alice Johnson', 'Michael Brown']
-def mask_string_by_replacement(lst):
-    masked_lst = []
-    for name in lst:
-        if name in replacement_names:
-            masked_lst.append(random.choice(replacement_names))
-        else:
-            masked_lst.append(name)
-    return masked_lst
-#data['Name']=data['Name'].apply(mask_string_by_replacement)
 
 def mask_strings_by_salt_and_hash(lst):
     """Encrypt a list of strings using salt and hash."""
@@ -108,14 +98,30 @@ def mask_string_by_replace_random_chars(plaintext_list):
 # Apply the random replacement algorithm to the 'Name' column
 #data['Name']= data['Name'].apply(lambda x: mask_string_by_replace_random_chars(x) if isinstance(x, str) else x)
 # Define a fixed key value for XOR operation
-key = 2
-def mask_string_by_xor_chars(plaintext):
-    """Perform a bitwise XOR operation between each character in a string and a fixed key value."""
-    return ''.join([chr(ord(c) ^ key) for c in plaintext])
-# Apply the Bitwise XOR algorithm to the 'Name' column
-data['Name'] = data['Name'].apply(lambda x: mask_string_by_xor_chars(x) if isinstance(x, str) else x)
+# key = 2
+# def mask_string_by_xor_chars(plaintext):
+#     """Perform a bitwise XOR operation between each character in a string and a fixed key value."""
+#     return ''.join([chr(ord(c) ^ key) for c in plaintext])
+def mask_string_by_xor_chars(plaintext, key=2):
+    print(9)
+    if isinstance(plaintext, str):
+        print(8)
+        masked_str = ""
+        for c in plaintext:
+            print(7)
+            masked_char = chr(ord(c) ^ key)
+            masked_str += masked_char
+        return masked_str
+data = data.applymap(mask_string_by_xor_chars)
 
-import numpy as np
+def shuffle_names(name):
+    if isinstance(name, str):
+        names = name.split()
+        random.shuffle(names)
+        return ' '.join(names)
+    return name
+# data['Name']=data['Name'].apply(shuffle_names)
+# print(data['Name'])
 
 def samp(Gender):
     return np.where(Gender.eq("M"), "F", np.where(Gender.eq("F"), "O", "M"))

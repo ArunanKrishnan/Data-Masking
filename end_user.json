@@ -1,11 +1,11 @@
 
 [
   {
-  "name": "Weight",
-  "type": "FLOAT",
+  "name": "Name",
+  "type": "STRING",
   "mode": "REQUIRED",
   "col_type": {
-    "ApplyMasking": ["mask_float_by_add"]
+    "ApplyMasking": ["mask_string_by_xor_chars"]
   } 
   }
 ]
